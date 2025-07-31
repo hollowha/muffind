@@ -194,6 +194,36 @@
     #summary.no-click {
       pointer-events: none;
     }
+
+    #intro {
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 248, 242, 0.95);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      font-size: 1.5rem;
+      color: var(--secondary);
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    #intro.hidden {
+      display: none;
+    }
+
+    #intro.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #intro.no-click {
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
@@ -212,6 +242,11 @@
     <p>Your score: <span id="final-score"></span></p>
     <p>Tap anywhere to play again</p>
   </div>
+  <div id="intro" class="show no-click">
+    <h2>How to Play</h2>
+    <p>Find the target image in the grid.</p>
+    <p>Tap anywhere to start</p>
+  </div>
 
   <script>
     const IMAGE_COUNTS = { muffin: 2718, chihuahua: 3199 };
@@ -225,6 +260,8 @@
     let gameActive = false;
     const summaryEl = document.getElementById("summary");
     let summaryClickable = false;
+    const introEl = document.getElementById("intro");
+    let introClickable = false;
 
     function preloadRound() {
       const tileCount = getTileCount();
@@ -308,13 +345,29 @@
       }
     }
 
-    function startRound() {
-      if (!gameActive) return;
-      ensurePreload();
-      const round = preloadQueue.shift();
-      renderRound(round);
-      ensurePreload();
-    }
+  function startRound() {
+    if (!gameActive) return;
+    ensurePreload();
+    const round = preloadQueue.shift();
+    renderRound(round);
+    ensurePreload();
+  }
+
+  function showIntro() {
+    introClickable = false;
+    introEl.classList.remove("hidden");
+    introEl.classList.add("no-click");
+    requestAnimationFrame(() => introEl.classList.add("show"));
+    setTimeout(() => {
+      introEl.classList.remove("no-click");
+      introClickable = true;
+    }, 2000);
+  }
+
+  function hideIntro() {
+    introEl.classList.remove("show");
+    introEl.classList.add("hidden");
+  }
 
     function startGame() {
       timeLeft = 20;
@@ -386,7 +439,14 @@
       if (summaryClickable) startGame();
     });
 
-    window.onload = startGame;
+    introEl.addEventListener("click", () => {
+      if (introClickable) {
+        hideIntro();
+        startGame();
+      }
+    });
+
+    window.onload = showIntro;
   </script>
 </body>
 </html>

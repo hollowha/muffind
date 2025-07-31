@@ -355,6 +355,7 @@
   }
 
   function showIntro() {
+    ensurePreload();
     introClickable = false;
     introEl.classList.remove("hidden");
     introEl.classList.add("no-click");

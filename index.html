@@ -61,6 +61,23 @@
       gap: 12px;
     }
 
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-4px); }
+      75% { transform: translateX(4px); }
+    }
+
 
     @media (max-width: 600px) {
       .grid {
@@ -77,7 +94,7 @@
       background-size: cover;
       background-position: center;
       aspect-ratio: 1 / 1;
-
+      animation: fadeIn 0.3s ease;
 
       transition: transform 0.2s, box-shadow 0.2s;
     }
@@ -85,6 +102,15 @@
     .tile:hover {
       transform: translateY(-4px);
       box-shadow: 0 8px 16px var(--shadow);
+    }
+
+    .tile.correct {
+      animation: pulse 0.4s;
+      outline: 4px solid var(--success);
+    }
+
+    .tile.wrong {
+      animation: shake 0.4s;
     }
 
     #message {
@@ -127,10 +153,18 @@
       font-size: 1.5rem;
       color: var(--secondary);
       cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
     }
 
     .hidden {
       display: none;
+    }
+
+    #summary.show {
+      opacity: 1;
+      pointer-events: auto;
     }
   </style>
 </head>
@@ -255,7 +289,9 @@
       score = 0;
       gameActive = true;
       updateHUD();
-      document.getElementById('summary').classList.add('hidden');
+      const summaryEl = document.getElementById('summary');
+      summaryEl.classList.remove('show');
+      summaryEl.classList.add('hidden');
       startRound();
       clearInterval(timerId);
       timerId = setInterval(() => {
@@ -272,7 +308,9 @@
       gameActive = false;
       clearInterval(timerId);
       document.getElementById('final-score').textContent = score;
-      document.getElementById('summary').classList.remove('hidden');
+      const summaryEl = document.getElementById('summary');
+      summaryEl.classList.remove('hidden');
+      requestAnimationFrame(() => summaryEl.classList.add('show'));
     }
 
     function handleClick(index, tileEl) {
@@ -284,15 +322,22 @@
         updateHUD();
         msgEl.textContent = '🎉 Correct! Loading next...';
         msgEl.className = 'success';
-        tileEl.style.outline = `4px solid var(--success)`;
-        setTimeout(() => { if (gameActive) startRound(); }, 800);
+        tileEl.classList.add('correct');
+        setTimeout(() => {
+          tileEl.classList.remove('correct');
+          if (gameActive) startRound();
+        }, 600);
       } else {
         timeLeft = Math.max(0, timeLeft - 1);
         updateHUD();
         msgEl.textContent = '❌ Try again.';
         msgEl.className = 'error';
-        tileEl.style.transform = 'scale(0.95)';
-        setTimeout(() => { tileEl.style.transform = ''; msgEl.textContent = ''; msgEl.className = ''; }, 500);
+        tileEl.classList.add('wrong');
+        setTimeout(() => {
+          tileEl.classList.remove('wrong');
+          msgEl.textContent = '';
+          msgEl.className = '';
+        }, 500);
         if (timeLeft <= 0) {
           endGame();
         }

@@ -118,9 +118,17 @@
   </main>
 
   <script>
-    const TOTAL_IMAGES = 100;
+    const IMAGE_COUNTS = { muffin: 2718, chihuahua: 3199 };
     const digits = 4;
     let targetType, otherType, targetIndex;
+
+    function getUniqueRandomNumbers(count, max) {
+      const nums = new Set();
+      while (nums.size < count) {
+        nums.add(Math.floor(Math.random() * max) + 1);
+      }
+      return Array.from(nums);
+    }
 
     function getTileCount() {
       return window.innerWidth <= 600 ? 15 : 16;
@@ -139,12 +147,22 @@
       const gameDiv = document.getElementById('game');
       gameDiv.innerHTML = '';
 
+      const otherNums = getUniqueRandomNumbers(tileCount - 1, IMAGE_COUNTS[otherType]);
+      const targetNum = getUniqueRandomNumbers(1, IMAGE_COUNTS[targetType])[0];
+
       for (let i = 0; i < tileCount; i++) {
         const tile = document.createElement('div');
         tile.className = 'tile';
-        const type = i === targetIndex ? targetType : otherType;
-        const num = String(Math.floor(Math.random() * TOTAL_IMAGES) + 1).padStart(digits, '0');
-        tile.style.backgroundImage = `url(${type}/${type}_${num}.jpg)`;
+        let type, num;
+        if (i === targetIndex) {
+          type = targetType;
+          num = targetNum;
+        } else {
+          type = otherType;
+          num = otherNums.pop();
+        }
+        const padded = String(num).padStart(digits, '0');
+        tile.style.backgroundImage = `url(${type}/${type}_${padded}.jpg)`;
         tile.addEventListener('click', () => handleClick(i, tile));
         gameDiv.appendChild(tile);
       }

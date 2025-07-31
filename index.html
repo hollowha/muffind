@@ -6,10 +6,10 @@
   <title>Find the Target Game</title>
   <style>
     :root {
-      --bg-color: #f2f4f8;
-      --card-bg: #ffffff;
-      --primary: #3366ff;
-      --secondary: #555555;
+      --bg-color: #fff8f2;
+      --card-bg: #fffaf5;
+      --primary: #ff6b3d;
+      --secondary: #734c39;
       --success: #28a745;
       --error: #dc3545;
       --shadow: rgba(0, 0, 0, 0.1);
@@ -23,7 +23,7 @@
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: linear-gradient(135deg, #f2f4f8, #e9ecf2);
+      background: linear-gradient(135deg, #fff8f2, #ffe9dd);
       min-height: 100vh;
       display: flex;
       align-items: center;
@@ -34,7 +34,8 @@
     .container {
       background-color: var(--card-bg);
       box-shadow: 0 8px 24px var(--shadow);
-      border-radius: 16px;
+      border-radius: 20px;
+      border: 1px solid #ffd8b5;
       padding: 40px 20px;
       width: 100%;
       max-width: 600px;
@@ -53,14 +54,21 @@
       gap: 12px;
     }
 
+    @media (max-width: 600px) {
+      .grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
     .tile {
       background-color: var(--bg-color);
-      border-radius: 8px;
+      border-radius: 12px;
       overflow: hidden;
       cursor: pointer;
       background-size: cover;
       background-position: center;
       aspect-ratio: 1 / 1;
+      box-shadow: 0 2px 4px var(--shadow);
       transition: transform 0.2s, box-shadow 0.2s;
     }
 
@@ -104,19 +112,24 @@
     const digits = 4;
     let targetType, otherType, targetIndex;
 
+    function getTileCount() {
+      return window.innerWidth <= 600 ? 15 : 16;
+    }
+
     function initGame() {
+      const tileCount = getTileCount();
       targetType = Math.random() < 0.5 ? 'chihuahua' : 'muffin';
       otherType = targetType === 'chihuahua' ? 'muffin' : 'chihuahua';
       document.getElementById('mode').textContent = `Find the ${targetType}`;
       const msgEl = document.getElementById('message');
       msgEl.textContent = '';
       msgEl.className = '';
-      targetIndex = Math.floor(Math.random() * 16);
+      targetIndex = Math.floor(Math.random() * tileCount);
 
       const gameDiv = document.getElementById('game');
       gameDiv.innerHTML = '';
 
-      for (let i = 0; i < 16; i++) {
+      for (let i = 0; i < tileCount; i++) {
         const tile = document.createElement('div');
         tile.className = 'tile';
         const type = i === targetIndex ? targetType : otherType;

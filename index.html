@@ -166,6 +166,9 @@
       opacity: 1;
       pointer-events: auto;
     }
+    #summary.no-click {
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
@@ -195,6 +198,8 @@
     let score = 0;
     let timerId;
     let gameActive = false;
+    const summaryEl = document.getElementById("summary");
+    let summaryClickable = false;
 
     function preloadRound() {
       const tileCount = getTileCount();
@@ -289,9 +294,10 @@
       score = 0;
       gameActive = true;
       updateHUD();
-      const summaryEl = document.getElementById('summary');
-      summaryEl.classList.remove('show');
-      summaryEl.classList.add('hidden');
+      summaryClickable = false;
+      summaryEl.classList.remove("no-click");
+      summaryEl.classList.remove("show");
+      summaryEl.classList.add("hidden");
       startRound();
       clearInterval(timerId);
       timerId = setInterval(() => {
@@ -308,9 +314,14 @@
       gameActive = false;
       clearInterval(timerId);
       document.getElementById('final-score').textContent = score;
-      const summaryEl = document.getElementById('summary');
-      summaryEl.classList.remove('hidden');
-      requestAnimationFrame(() => summaryEl.classList.add('show'));
+      summaryClickable = false;
+      summaryEl.classList.remove("hidden");
+      summaryEl.classList.add("no-click");
+      requestAnimationFrame(() => summaryEl.classList.add("show"));
+      setTimeout(() => {
+        summaryEl.classList.remove("no-click");
+        summaryClickable = true;
+      }, 2000);
     }
 
     function handleClick(index, tileEl) {
@@ -344,7 +355,9 @@
       }
     }
 
-    document.getElementById('summary').addEventListener('click', startGame);
+    summaryEl.addEventListener("click", () => {
+      if (summaryClickable) startGame();
+    });
 
     window.onload = startGame;
   </script>

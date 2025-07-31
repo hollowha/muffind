@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find the Target Game</title>
+  <style>
+    :root {
+      --bg-color: #f5f6fa;
+      --card-bg: #ffffff;
+      --primary: #1a73e8;
+      --secondary: #5f6368;
+      --success: #34a853;
+      --error: #ea4335;
+      --shadow: rgba(60,64,67,0.15);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+      color: var(--secondary);
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      color: var(--primary);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      width: 100%;
+      max-width: 440px;
+    }
+    .tile {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      box-shadow: 0 4px 6px var(--shadow);
+      transition: transform 0.2s, box-shadow 0.2s;
+      aspect-ratio: 1;
+      background-size: cover;
+      background-position: center;
+    }
+    .tile:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 12px var(--shadow);
+    }
+    #message {
+      margin-top: 20px;
+      font-size: 1.1rem;
+      min-height: 1.2em;
+      text-align: center;
+    }
+    #message.success { color: var(--success); }
+    #message.error { color: var(--error); }
+    #footer {
+      margin-top: 30px;
+      font-size: 0.9rem;
+      color: var(--secondary);
+    }
+  </style>
+</head>
+<body>
+  <h1 id="mode">Loading...</h1>
+  <div id="game" class="grid"></div>
+  <p id="message"></p>
+  <div id="footer">Click the correct image to continue</div>
+
+  <script>
+    const TOTAL_IMAGES = 100;
+    const digits = 4;
+    let targetType, otherType, targetIndex;
+
+    function initGame() {
+      targetType = Math.random() < 0.5 ? 'chihuahua' : 'muffin';
+      otherType = targetType === 'chihuahua' ? 'muffin' : 'chihuahua';
+      document.getElementById('mode').textContent = `Find the ${targetType}`;
+      const msgEl = document.getElementById('message');
+      msgEl.textContent = '';
+      msgEl.className = '';
+      targetIndex = Math.floor(Math.random() * 16);
+
+      const gameDiv = document.getElementById('game');
+      gameDiv.innerHTML = '';
+
+      for (let i = 0; i < 16; i++) {
+        const tile = document.createElement('div');
+        tile.className = 'tile';
+        const type = i === targetIndex ? targetType : otherType;
+        const num = String(Math.floor(Math.random() * TOTAL_IMAGES) + 1).padStart(digits, '0');
+        tile.style.backgroundImage = `url(${type}/${type}_${num}.jpg)`;
+        tile.addEventListener('click', () => handleClick(i, tile));
+        gameDiv.appendChild(tile);
+      }
+    }
+
+    function handleClick(index, tileEl) {
+      const msgEl = document.getElementById('message');
+      if (index === targetIndex) {
+        msgEl.textContent = '🎉 Correct! Loading next...';
+        msgEl.className = 'success';
+        tileEl.style.outline = `4px solid var(--success)`;
+        setTimeout(initGame, 800);
+      } else {
+        msgEl.textContent = '❌ Try again.';
+        msgEl.className = 'error';
+        tileEl.style.transform = 'scale(0.95)';
+        setTimeout(() => { tileEl.style.transform = ''; msgEl.textContent = ''; msgEl.className = ''; }, 500);
+      }
+    }
+
+    window.onload = initGame;
+  </script>
+</body>
+</html>

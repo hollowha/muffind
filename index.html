@@ -87,6 +87,11 @@
       box-shadow: 0 8px 16px var(--shadow);
     }
 
+    #status {
+      margin-bottom: 16px;
+      font-weight: bold;
+    }
+
     #message {
       margin-top: 24px;
       font-size: 1.2rem;
@@ -107,20 +112,64 @@
       color: var(--secondary);
       opacity: 0.8;
     }
+
+    #overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--secondary);
+      z-index: 10;
+    }
+
+    #overlay.hidden {
+      display: none;
+    }
+
+    #scoreboard {
+      background-color: var(--card-bg);
+      padding: 30px 40px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 8px 24px var(--shadow);
+    }
+
+    #scoreboard h2 {
+      margin-bottom: 12px;
+      color: var(--primary);
+    }
+
+    #scoreboard .hint {
+      margin-top: 8px;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
   </style>
 </head>
 <body>
   <main class="container">
     <h1 id="mode">Loading...</h1>
+    <div id="status"></div>
     <div id="game" class="grid"></div>
     <p id="message"></p>
     <div id="footer">Click the correct image to continue</div>
   </main>
 
+  <div id="overlay" class="hidden">
+    <div id="scoreboard">
+      <h2>Time's Up!</h2>
+      <p id="finalScore"></p>
+      <p class="hint">Tap anywhere to play again</p>
+    </div>
+  </div>
+
   <script>
     const IMAGE_COUNTS = { muffin: 2718, chihuahua: 3199 };
     const digits = 4;
     let targetType, otherType, targetIndex;
+    let timeLeft, score, timerInterval;
 
     function getUniqueRandomNumbers(count, max) {
       const nums = new Set();
@@ -132,6 +181,37 @@
 
     function getTileCount() {
       return window.innerWidth <= 600 ? 15 : 16;
+    }
+
+    function updateStatus() {
+      const statusEl = document.getElementById('status');
+      statusEl.textContent = `Time: ${timeLeft}s | Score: ${score}`;
+    }
+
+    function startTimer() {
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        updateStatus();
+        if (timeLeft <= 0) {
+          endGame();
+        }
+      }, 1000);
+    }
+
+    function startGame() {
+      timeLeft = 20;
+      score = 0;
+      document.getElementById('overlay').classList.add('hidden');
+      updateStatus();
+      initGame();
+      startTimer();
+    }
+
+    function endGame() {
+      clearInterval(timerInterval);
+      document.getElementById('finalScore').textContent = `Score: ${score}`;
+      document.getElementById('overlay').classList.remove('hidden');
     }
 
     function initGame() {
@@ -171,19 +251,30 @@
     function handleClick(index, tileEl) {
       const msgEl = document.getElementById('message');
       if (index === targetIndex) {
+        score++;
+        timeLeft++;
+        updateStatus();
         msgEl.textContent = '🎉 Correct! Loading next...';
         msgEl.className = 'success';
         tileEl.style.outline = `4px solid var(--success)`;
         setTimeout(initGame, 800);
       } else {
+        timeLeft = Math.max(0, timeLeft - 1);
+        updateStatus();
         msgEl.textContent = '❌ Try again.';
         msgEl.className = 'error';
         tileEl.style.transform = 'scale(0.95)';
-        setTimeout(() => { tileEl.style.transform = ''; msgEl.textContent = ''; msgEl.className = ''; }, 500);
+        setTimeout(() => {
+          tileEl.style.transform = '';
+          msgEl.textContent = '';
+          msgEl.className = '';
+          if (timeLeft <= 0) endGame();
+        }, 500);
       }
     }
 
-    window.onload = initGame;
+    window.onload = startGame;
+    document.getElementById('overlay').addEventListener('click', startGame);
   </script>
 </body>
 </html>

@@ -121,6 +121,48 @@
     const IMAGE_COUNTS = { muffin: 2718, chihuahua: 3199 };
     const digits = 4;
     let targetType, otherType, targetIndex;
+    const preloadQueue = [];
+
+    function preloadRound() {
+      const tileCount = getTileCount();
+      const roundTargetType = Math.random() < 0.5 ? 'chihuahua' : 'muffin';
+      const roundOtherType = roundTargetType === 'chihuahua' ? 'muffin' : 'chihuahua';
+      const roundTargetIndex = Math.floor(Math.random() * tileCount);
+
+      const otherNums = getUniqueRandomNumbers(tileCount - 1, IMAGE_COUNTS[roundOtherType]);
+      const targetNum = getUniqueRandomNumbers(1, IMAGE_COUNTS[roundTargetType])[0];
+
+      const tiles = [];
+      for (let i = 0; i < tileCount; i++) {
+        let type, num;
+        if (i === roundTargetIndex) {
+          type = roundTargetType;
+          num = targetNum;
+        } else {
+          type = roundOtherType;
+          num = otherNums.pop();
+        }
+        const padded = String(num).padStart(digits, '0');
+        const path = `${type}/${type}_${padded}.jpg`;
+        const img = new Image();
+        img.src = path; // preload
+        tiles.push({ path });
+      }
+
+      return {
+        tileCount,
+        targetType: roundTargetType,
+        otherType: roundOtherType,
+        targetIndex: roundTargetIndex,
+        tiles
+      };
+    }
+
+    function ensurePreload() {
+      while (preloadQueue.length < 2) {
+        preloadQueue.push(preloadRound());
+      }
+    }
 
     function getUniqueRandomNumbers(count, max) {
       const nums = new Set();
@@ -134,38 +176,33 @@
       return window.innerWidth <= 600 ? 15 : 16;
     }
 
-    function initGame() {
-      const tileCount = getTileCount();
-      targetType = Math.random() < 0.5 ? 'chihuahua' : 'muffin';
-      otherType = targetType === 'chihuahua' ? 'muffin' : 'chihuahua';
+    function renderRound(round) {
+      targetType = round.targetType;
+      otherType = round.otherType;
+      targetIndex = round.targetIndex;
+
       document.getElementById('mode').textContent = `Find the ${targetType}`;
       const msgEl = document.getElementById('message');
       msgEl.textContent = '';
       msgEl.className = '';
-      targetIndex = Math.floor(Math.random() * tileCount);
 
       const gameDiv = document.getElementById('game');
       gameDiv.innerHTML = '';
 
-      const otherNums = getUniqueRandomNumbers(tileCount - 1, IMAGE_COUNTS[otherType]);
-      const targetNum = getUniqueRandomNumbers(1, IMAGE_COUNTS[targetType])[0];
-
-      for (let i = 0; i < tileCount; i++) {
+      for (let i = 0; i < round.tileCount; i++) {
         const tile = document.createElement('div');
         tile.className = 'tile';
-        let type, num;
-        if (i === targetIndex) {
-          type = targetType;
-          num = targetNum;
-        } else {
-          type = otherType;
-          num = otherNums.pop();
-        }
-        const padded = String(num).padStart(digits, '0');
-        tile.style.backgroundImage = `url(${type}/${type}_${padded}.jpg)`;
+        tile.style.backgroundImage = `url(${round.tiles[i].path})`;
         tile.addEventListener('click', () => handleClick(i, tile));
         gameDiv.appendChild(tile);
       }
+    }
+
+    function initGame() {
+      ensurePreload();
+      const round = preloadQueue.shift();
+      renderRound(round);
+      ensurePreload();
     }
 
     function handleClick(index, tileEl) {

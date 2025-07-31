@@ -107,21 +107,60 @@
       color: var(--secondary);
       opacity: 0.8;
     }
+
+    #hud {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      font-weight: bold;
+    }
+
+    #summary {
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 248, 242, 0.95);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      font-size: 1.5rem;
+      color: var(--secondary);
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
   <main class="container">
     <h1 id="mode">Loading...</h1>
+    <div id="hud">
+      <span>Time: <span id="timer">20</span>s</span>
+      <span>Score: <span id="score">0</span></span>
+    </div>
     <div id="game" class="grid"></div>
     <p id="message"></p>
     <div id="footer">Click the correct image to continue</div>
   </main>
+  <div id="summary" class="hidden">
+    <h2>Time's up!</h2>
+    <p>Your score: <span id="final-score"></span></p>
+    <p>Tap anywhere to play again</p>
+  </div>
 
   <script>
     const IMAGE_COUNTS = { muffin: 2718, chihuahua: 3199 };
     const digits = 4;
     let targetType, otherType, targetIndex;
     const preloadQueue = [];
+
+    let timeLeft = 20;
+    let score = 0;
+    let timerId;
+    let gameActive = false;
 
     function preloadRound() {
       const tileCount = getTileCount();
@@ -176,6 +215,11 @@
       return window.innerWidth <= 600 ? 15 : 16;
     }
 
+    function updateHUD() {
+      document.getElementById('timer').textContent = timeLeft;
+      document.getElementById('score').textContent = score;
+    }
+
     function renderRound(round) {
       targetType = round.targetType;
       otherType = round.otherType;
@@ -198,29 +242,66 @@
       }
     }
 
-    function initGame() {
+    function startRound() {
+      if (!gameActive) return;
       ensurePreload();
       const round = preloadQueue.shift();
       renderRound(round);
       ensurePreload();
     }
 
+    function startGame() {
+      timeLeft = 20;
+      score = 0;
+      gameActive = true;
+      updateHUD();
+      document.getElementById('summary').classList.add('hidden');
+      startRound();
+      clearInterval(timerId);
+      timerId = setInterval(() => {
+        timeLeft--;
+        updateHUD();
+        if (timeLeft <= 0) {
+          endGame();
+        }
+      }, 1000);
+    }
+
+    function endGame() {
+      if (!gameActive) return;
+      gameActive = false;
+      clearInterval(timerId);
+      document.getElementById('final-score').textContent = score;
+      document.getElementById('summary').classList.remove('hidden');
+    }
+
     function handleClick(index, tileEl) {
+      if (!gameActive) return;
       const msgEl = document.getElementById('message');
       if (index === targetIndex) {
+        score++;
+        timeLeft++;
+        updateHUD();
         msgEl.textContent = '🎉 Correct! Loading next...';
         msgEl.className = 'success';
         tileEl.style.outline = `4px solid var(--success)`;
-        setTimeout(initGame, 800);
+        setTimeout(() => { if (gameActive) startRound(); }, 800);
       } else {
+        timeLeft = Math.max(0, timeLeft - 1);
+        updateHUD();
         msgEl.textContent = '❌ Try again.';
         msgEl.className = 'error';
         tileEl.style.transform = 'scale(0.95)';
         setTimeout(() => { tileEl.style.transform = ''; msgEl.textContent = ''; msgEl.className = ''; }, 500);
+        if (timeLeft <= 0) {
+          endGame();
+        }
       }
     }
 
-    window.onload = initGame;
+    document.getElementById('summary').addEventListener('click', startGame);
+
+    window.onload = startGame;
   </script>
 </body>
 </html>

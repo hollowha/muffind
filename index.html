@@ -11,6 +11,8 @@
       --card-bg: #fffaf5;
       --primary: #ff6b3d;
       --secondary: #734c39;
+      --muffin-color: #ff6b3d;
+      --chihuahua-color: #007bff;
 
       --success: #28a745;
       --error: #dc3545;
@@ -52,7 +54,15 @@
     h1 {
       font-size: 1.8rem;
       margin-bottom: 24px;
-      color: var(--primary);
+      color: var(--secondary);
+    }
+
+    .target-muffin {
+      color: var(--muffin-color);
+    }
+
+    .target-chihuahua {
+      color: var(--chihuahua-color);
     }
 
     .grid {
@@ -141,6 +151,17 @@
       font-weight: bold;
     }
 
+    #timer {
+      font-size: 1.6rem;
+      color: var(--primary);
+    }
+
+    #time-display {
+      background-color: rgba(255, 107, 61, 0.1);
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+
     #summary {
       position: fixed;
       inset: 0;
@@ -173,9 +194,9 @@
 </head>
 <body>
   <main class="container">
-    <h1 id="mode">Loading...</h1>
+    <h1 id="mode">Find the <span id="target-name">Loading...</span></h1>
     <div id="hud">
-      <span>Time: <span id="timer">20</span>s</span>
+      <span id="time-display">Time: <span id="timer">20</span>s</span>
       <span>Score: <span id="score">0</span></span>
     </div>
     <div id="game" class="grid"></div>
@@ -264,7 +285,9 @@
       otherType = round.otherType;
       targetIndex = round.targetIndex;
 
-      document.getElementById('mode').textContent = `Find the ${targetType}`;
+      const targetNameEl = document.getElementById('target-name');
+      targetNameEl.textContent = targetType;
+      targetNameEl.className = `target-${targetType}`;
       const msgEl = document.getElementById('message');
       msgEl.textContent = '';
       msgEl.className = '';

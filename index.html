@@ -53,6 +53,11 @@
       align-items: center;
       justify-content: center;
       color: var(--secondary);
+      transition: background 1.5s ease;
+    }
+
+    body.hard-mode {
+      background: linear-gradient(135deg, #ffe2cc, #ffb48a);
     }
 
     .container {
@@ -87,7 +92,7 @@
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      grid-template-columns: repeat(5, 1fr);
       gap: 16px;
     }
 
@@ -367,7 +372,10 @@
   <script>
     const IMAGE_COUNTS = { muffin: 2718, chihuahua: 3199 };
     const digits = 4;
-    let targetType, otherType, targetIndex;
+    let targetType, otherType, targetIndices = [];
+    let foundTargets = 0;
+    let isHardMode = false;
+    const HARD_MODE_THRESHOLD = 5;
     const preloadQueue = [];
     const MAX_PRELOAD_ROUNDS = 10;
 
@@ -416,21 +424,23 @@
     const contactEl = document.getElementById("contact");
     const readyEl = document.getElementById("ready");
 
-    function preloadRound() {
+    function preloadRound(hard = false) {
       const tileCount = getTileCount();
       const roundTargetType = Math.random() < 0.5 ? 'chihuahua' : 'muffin';
       const roundOtherType = roundTargetType === 'chihuahua' ? 'muffin' : 'chihuahua';
-      const roundTargetIndex = Math.floor(Math.random() * tileCount);
+      const targetCount = hard ? 2 : 1;
+      const targetIndices = getUniqueRandomNumbers(targetCount, tileCount);
 
-      const otherNums = getUniqueRandomNumbers(tileCount - 1, IMAGE_COUNTS[roundOtherType]);
-      const targetNum = getUniqueRandomNumbers(1, IMAGE_COUNTS[roundTargetType])[0];
+      const otherNums = getUniqueRandomNumbers(tileCount - targetCount, IMAGE_COUNTS[roundOtherType]);
+      const targetNums = getUniqueRandomNumbers(targetCount, IMAGE_COUNTS[roundTargetType]);
 
       const tiles = [];
       for (let i = 0; i < tileCount; i++) {
         let type, num;
-        if (i === roundTargetIndex) {
+        const tIndex = targetIndices.indexOf(i);
+        if (tIndex !== -1) {
           type = roundTargetType;
-          num = targetNum;
+          num = targetNums[tIndex];
         } else {
           type = roundOtherType;
           num = otherNums.pop();
@@ -446,14 +456,14 @@
         tileCount,
         targetType: roundTargetType,
         otherType: roundOtherType,
-        targetIndex: roundTargetIndex,
+        targetIndices,
         tiles
       };
     }
 
     function ensurePreload() {
       while (preloadQueue.length < MAX_PRELOAD_ROUNDS) {
-        preloadQueue.push(preloadRound());
+        preloadQueue.push(preloadRound(isHardMode));
       }
     }
 
@@ -466,7 +476,7 @@
     }
 
     function getTileCount() {
-      return window.innerWidth <= 600 ? 15 : 16;
+      return 15;
     }
 
     function updateHUD() {
@@ -485,7 +495,8 @@
     function renderRound(round) {
       targetType = round.targetType;
       otherType = round.otherType;
-      targetIndex = round.targetIndex;
+      targetIndices = round.targetIndices;
+      foundTargets = 0;
 
       const targetNameEl = document.getElementById('target-name');
       targetNameEl.textContent = targetType;
@@ -553,6 +564,13 @@
     history.replaceState(null, "", "/");
   }
 
+  function activateHardMode() {
+    isHardMode = true;
+    document.body.classList.add('hard-mode');
+    preloadQueue.length = 0;
+    ensurePreload();
+  }
+
   function showReady(cb) {
       readyEl.classList.remove("hidden");
       readyEl.textContent = "Ready";
@@ -571,9 +589,13 @@
       showReady(() => {
         timeLeft = 30;
         score = 0;
+        isHardMode = false;
+        document.body.classList.remove('hard-mode');
         sound.start();
         gameActive = true;
         updateHUD();
+        preloadQueue.length = 0;
+        ensurePreload();
         summaryClickable = false;
         summaryEl.classList.remove("no-click");
         summaryEl.classList.remove("show");
@@ -609,19 +631,32 @@
     function handleClick(index, tileEl) {
       if (!gameActive) return;
       const msgEl = document.getElementById('message');
-      if (index === targetIndex) {
+      if (targetIndices.includes(index) && !tileEl.classList.contains('found')) {
         sound.correct();
-        score++;
-        timeLeft += 2;
-        updateHUD();
-        msgEl.textContent = '🎉 Correct! +2s';
-        msgEl.className = 'success';
-        showTimeChange(2);
         tileEl.classList.add('correct');
-        setTimeout(() => {
-          tileEl.classList.remove('correct');
-          if (gameActive) startRound();
-        }, 600);
+        tileEl.classList.add('found');
+        foundTargets++;
+        if (foundTargets === targetIndices.length) {
+          score++;
+          timeLeft += 2;
+          updateHUD();
+          msgEl.textContent = '🎉 Correct! +2s';
+          msgEl.className = 'success';
+          showTimeChange(2);
+          setTimeout(() => {
+            tileEl.classList.remove('correct', 'found');
+            if (!isHardMode && score >= HARD_MODE_THRESHOLD) {
+              activateHardMode();
+            }
+            if (gameActive) startRound();
+          }, 600);
+        } else {
+          msgEl.textContent = '✔️ One more!';
+          msgEl.className = 'success';
+          setTimeout(() => {
+            tileEl.classList.remove('correct', 'found');
+          }, 600);
+        }
       } else {
         sound.wrong();
         timeLeft = Math.max(0, timeLeft - 2);

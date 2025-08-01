@@ -170,9 +170,26 @@
     }
 
     #time-display {
+      position: relative;
       background-color: rgba(255, 107, 61, 0.1);
       padding: 2px 6px;
       border-radius: 6px;
+    }
+
+    #time-change {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      transform: translate(-50%, -50%);
+      font-size: 0.8rem;
+      opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+    }
+
+    #time-change.show {
+      opacity: 1;
+      transform: translate(-50%, -150%);
     }
 
     #summary {
@@ -239,7 +256,9 @@
   <main class="container">
     <h1 id="mode"><span class="prefix">Find the&nbsp;</span><span id="target-name">Loading...</span></h1>
     <div id="hud">
-      <span id="time-display">Time: <span id="timer">20</span>s</span>
+      <span id="time-display">Time: <span id="timer">30</span>s
+        <span id="time-change"></span>
+      </span>
       <span>Score: <span id="score">0</span></span>
     </div>
     <div id="game" class="grid"></div>
@@ -296,7 +315,7 @@
       end: () => playMelody([[440, 150], [349, 150], [262, 300]]),
     };
 
-    let timeLeft = 20;
+    let timeLeft = 30;
     let score = 0;
     let timerId;
     let gameActive = false;
@@ -363,6 +382,14 @@
       document.getElementById('score').textContent = score;
     }
 
+    function showTimeChange(delta) {
+      const el = document.getElementById('time-change');
+      el.textContent = (delta > 0 ? '+' : '') + delta + 's';
+      el.style.color = delta > 0 ? 'var(--success)' : 'var(--error)';
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 500);
+    }
+
     function renderRound(round) {
       targetType = round.targetType;
       otherType = round.otherType;
@@ -413,7 +440,7 @@
   }
 
   function startGame() {
-      timeLeft = 20;
+      timeLeft = 30;
       score = 0;
       sound.start();
       gameActive = true;
@@ -455,10 +482,11 @@
       if (index === targetIndex) {
         sound.correct();
         score++;
-        timeLeft++;
+        timeLeft += 2;
         updateHUD();
-        msgEl.textContent = '🎉 Correct! Loading next...';
+        msgEl.textContent = '🎉 Correct! +2s';
         msgEl.className = 'success';
+        showTimeChange(2);
         tileEl.classList.add('correct');
         setTimeout(() => {
           tileEl.classList.remove('correct');
@@ -466,10 +494,11 @@
         }, 600);
       } else {
         sound.wrong();
-        timeLeft = Math.max(0, timeLeft - 1);
+        timeLeft = Math.max(0, timeLeft - 2);
         updateHUD();
-        msgEl.textContent = '❌ Try again.';
+        msgEl.textContent = '❌ Wrong! -2s';
         msgEl.className = 'error';
+        showTimeChange(-2);
         tileEl.classList.add('wrong');
         setTimeout(() => {
           tileEl.classList.remove('wrong');

@@ -94,8 +94,8 @@
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
       gap: 16px;
+      grid-template-columns: repeat(var(--cols, 5), 1fr);
     }
 
     @keyframes fadeIn {
@@ -152,6 +152,10 @@
 
     .tile.found {
       pointer-events: none;
+    }
+
+    body.hard-mode .tile.found {
+      outline: 4px solid var(--success);
     }
 
     #message {
@@ -381,7 +385,8 @@
     let targetType, otherType, targetIndices = [];
     let foundTargets = 0;
     let isHardMode = false;
-    const HARD_MODE_THRESHOLD = 5;
+    const HARD_MODE_THRESHOLD = 10;
+    const MEDIUM_MODE_THRESHOLD = 2;
     const preloadQueue = [];
     const MAX_PRELOAD_ROUNDS = 10;
 
@@ -434,7 +439,7 @@
       const tileCount = getTileCount();
       const roundTargetType = Math.random() < 0.5 ? 'chihuahua' : 'muffin';
       const roundOtherType = roundTargetType === 'chihuahua' ? 'muffin' : 'chihuahua';
-      const targetCount = hard ? 2 : 1;
+      const targetCount = 1;
       const targetIndices = getUniqueRandomNumbers(targetCount, tileCount);
 
       const otherNums = getUniqueRandomNumbers(tileCount - targetCount, IMAGE_COUNTS[roundOtherType]);
@@ -482,7 +487,7 @@
     }
 
     function getTileCount() {
-      return 15;
+      return score < MEDIUM_MODE_THRESHOLD ? 6 : 15;
     }
 
     function updateHUD() {
@@ -513,6 +518,7 @@
 
       const gameDiv = document.getElementById('game');
       gameDiv.innerHTML = '';
+      gameDiv.style.setProperty('--cols', round.tileCount === 6 ? 3 : 5);
 
       for (let i = 0; i < round.tileCount; i++) {
         const tile = document.createElement('div');
@@ -648,17 +654,21 @@
         foundTargets++;
         if (foundTargets === targetIndices.length) {
           score++;
+          if (score === MEDIUM_MODE_THRESHOLD) {
+            preloadQueue.length = 0;
+          }
           timeLeft += 2;
           updateHUD();
           msgEl.textContent = '🎉 Correct! +2s';
           msgEl.className = 'success';
           showTimeChange(2);
           setTimeout(() => {
-            tileEl.classList.remove('correct');
             if (!isHardMode) {
+              tileEl.classList.remove('correct');
               tileEl.classList.remove('found');
             } else {
               tileEl.style.pointerEvents = '';
+              // keep highlight in hard mode
             }
             if (!isHardMode && score >= HARD_MODE_THRESHOLD) {
               activateHardMode();
@@ -669,8 +679,8 @@
           msgEl.textContent = '✔️ One more!';
           msgEl.className = 'success';
           setTimeout(() => {
-            tileEl.classList.remove('correct');
             if (!isHardMode) {
+              tileEl.classList.remove('correct');
               tileEl.classList.remove('found');
             }
           }, 600);

@@ -265,26 +265,35 @@
 
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     const audioCtx = new AudioContext();
-    function playBeep(freq, duration, vol = 0.15) {
-      if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      }
+
+    function playTone(freq, start, duration, vol = 0.15) {
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
       osc.connect(gain);
       gain.connect(audioCtx.destination);
       osc.type = 'sine';
       osc.frequency.value = freq;
-      gain.gain.value = vol;
-      osc.start();
-      setTimeout(() => osc.stop(), duration);
+      gain.gain.setValueAtTime(vol, start);
+      osc.start(start);
+      osc.stop(start + duration / 1000);
+    }
+
+    function playMelody(notes) {
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      let time = audioCtx.currentTime;
+      for (const [freq, duration, vol] of notes) {
+        playTone(freq, time, duration, vol);
+        time += duration / 1000;
+      }
     }
 
     const sound = {
-      start: () => playBeep(523, 200),
-      correct: () => playBeep(659, 150),
-      wrong: () => playBeep(196, 150),
-      end: () => playBeep(440, 300),
+      start: () => playMelody([[523, 120], [659, 120], [784, 200]]),
+      correct: () => playMelody([[659, 80], [880, 120]]),
+      wrong: () => playMelody([[196, 150], [131, 200]]),
+      end: () => playMelody([[440, 150], [349, 150], [262, 300]]),
     };
 
     let timeLeft = 20;

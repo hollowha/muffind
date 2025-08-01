@@ -440,7 +440,9 @@
       const roundTargetType = Math.random() < 0.5 ? 'chihuahua' : 'muffin';
       const roundOtherType = roundTargetType === 'chihuahua' ? 'muffin' : 'chihuahua';
       const targetCount = 1;
-      const targetIndices = getUniqueRandomNumbers(targetCount, tileCount);
+      // getUniqueRandomNumbers returns numbers starting from 1, but tile
+      // indices are 0-based, so adjust the values here
+      const targetIndices = getUniqueRandomNumbers(targetCount, tileCount).map(n => n - 1);
 
       const otherNums = getUniqueRandomNumbers(tileCount - targetCount, IMAGE_COUNTS[roundOtherType]);
       const targetNums = getUniqueRandomNumbers(targetCount, IMAGE_COUNTS[roundTargetType]);

@@ -118,7 +118,7 @@
 
     @media (max-width: 600px) {
       .grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(var(--cols, 3), 1fr);
       }
     }
 
@@ -439,7 +439,7 @@
       const tileCount = getTileCount();
       const roundTargetType = Math.random() < 0.5 ? 'chihuahua' : 'muffin';
       const roundOtherType = roundTargetType === 'chihuahua' ? 'muffin' : 'chihuahua';
-      const targetCount = 1;
+      const targetCount = hard ? 2 : 1;
       // getUniqueRandomNumbers returns numbers starting from 1, but tile
       // indices are 0-based, so adjust the values here
       const targetIndices = getUniqueRandomNumbers(targetCount, tileCount).map(n => n - 1);
@@ -520,7 +520,10 @@
 
       const gameDiv = document.getElementById('game');
       gameDiv.innerHTML = '';
-      gameDiv.style.setProperty('--cols', round.tileCount === 6 ? 3 : 5);
+      const cols = round.tileCount === 6
+        ? (window.innerWidth <= 600 ? 2 : 3)
+        : (window.innerWidth <= 600 ? 3 : 5);
+      gameDiv.style.setProperty('--cols', cols);
 
       for (let i = 0; i < round.tileCount; i++) {
         const tile = document.createElement('div');

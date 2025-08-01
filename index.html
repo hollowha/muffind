@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Muffin or Chihuahua is a fun image recognition game where muffins and chihuahuas battle for your attention. Can you spot the tasty muffin or the cute chihuahua?">
+  <meta name="description" content="Muffind is a fun image recognition game where muffins and chihuahuas battle for your attention. Can you spot the tasty muffin or the cute chihuahua?">
   <meta name="keywords" content="muffin, chihuahua, game, puzzle, image recognition, muffin or chihuahua, find the muffin, find the dog, muffin vs chihuahua, juego, chihuahua o muffin, muffin ou chihuahua,鬆餅,吉娃娃,遊戲,マフィン,チワワ,ゲーム,игра,маффин,чихуахуа">
   <meta name="description" lang="es" content="Muffin o Chihuahua es un juego para adivinar si la imagen muestra un muffin delicioso o un chihuahua adorable.">
   <meta name="description" lang="pt" content="Muffin ou Chihuahua é um jogo divertido para descobrir se a foto é de um muffin saboroso ou de um chihuahua fofo.">
   <meta name="description" lang="zh" content="這是一款趣味遊戲，挑戰你能否分辨圖片中的美味鬆餅還是可愛吉娃娃。">
   <meta name="description" lang="ja" content="マフィンかチワワかを見分けるゲームです。おいしいマフィンとかわいいチワワを見極めましょう。">
   <meta name="description" lang="ru" content="Игра «Маффин или Чихуахуа» проверит, сможете ли вы отличить вкусный маффин от милой чихуахуа.">
-  <title>Muffin or Chihuahua - Find the Target Game</title>
-  <meta property="og:title" content="Muffin or Chihuahua - Image Recognition Game">
-  <meta property="og:description" content="Can you tell muffins from chihuahuas? Play Muffin or Chihuahua and find out!">
+  <title>Muffind - Find Chihuahuas &amp; Muffins</title>
+  <meta property="og:title" content="Muffind - Find Chihuahuas &amp; Muffins">
+  <meta property="og:description" content="Can you tell muffins from chihuahuas? Play Muffind and find out!">
   <meta property="og:locale" content="en_US">
   <meta property="og:locale:alternate" content="es_ES">
   <meta property="og:locale:alternate" content="pt_BR">
@@ -333,14 +333,14 @@
     <p>Tap anywhere to begin 👆</p>
   </div>
   <div id="about" class="hidden">
-    <h2>關於我們</h2>
-    <p>我們是來自台灣的小型遊戲開發團隊，由一群熱血的大學生組成。</p>
-    <p>點擊任意處返回遊戲</p>
+    <h2>About Us</h2>
+    <p>We are a small game development team from Taiwan made up of passionate university students.</p>
+    <p>Click anywhere to return to the game.</p>
   </div>
   <div id="contact" class="hidden">
-    <h2>聯絡我們</h2>
-    <p>歡迎寄信到 <a href="mailto:catfish1105@gmail.com">catfish1105@gmail.com</a> 與我們聯絡。</p>
-    <p>點擊任意處返回遊戲</p>
+    <h2>Contact Us</h2>
+    <p>Feel free to email us at <a href="mailto:catfish1105@gmail.com">catfish1105@gmail.com</a>.</p>
+    <p>Click anywhere to return to the game.</p>
   </div>
 
   <script>
@@ -618,12 +618,12 @@
     function checkPage() {
       const params = new URLSearchParams(window.location.search);
       if (params.has("about")) {
-        document.title = "About Us - Muffin or Chihuahua";
-        document.querySelector('meta[name="description"]').setAttribute('content', '我們是來自台灣的小型遊戲開發團隊，由一群熱血的大學生組成。');
+        document.title = "About Us - Muffind";
+        document.querySelector('meta[name="description"]').setAttribute('content', 'We are a small game development team from Taiwan made up of passionate university students.');
         showAbout();
       } else if (params.has("contact")) {
-        document.title = "Contact Us - Muffin or Chihuahua";
-        document.querySelector('meta[name="description"]').setAttribute('content', '歡迎寄信到 catfish1105@gmail.com 與我們聯絡。');
+        document.title = "Contact Us - Muffind";
+        document.querySelector('meta[name="description"]').setAttribute('content', 'Feel free to email us at catfish1105@gmail.com.');
         showContact();
       } else {
         showIntro();

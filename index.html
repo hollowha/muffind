@@ -53,11 +53,13 @@
       align-items: center;
       justify-content: center;
       color: var(--secondary);
-      transition: background 1.5s ease;
+      filter: brightness(1);
+      transition: background 1.5s ease, filter 1.5s ease;
     }
 
     body.hard-mode {
       background: linear-gradient(135deg, #ffe2cc, #ffb48a);
+      filter: brightness(0.85);
     }
 
     .container {
@@ -146,6 +148,10 @@
 
     .tile.wrong {
       animation: shake 0.4s;
+    }
+
+    .tile.found {
+      pointer-events: none;
     }
 
     #message {
@@ -572,6 +578,7 @@
   }
 
   function showReady(cb) {
+      ensurePreload();
       readyEl.classList.remove("hidden");
       readyEl.textContent = "Ready";
       requestAnimationFrame(() => readyEl.classList.add("show"));
@@ -586,20 +593,20 @@
     }
 
   function startGame() {
+      timeLeft = 30;
+      score = 0;
+      isHardMode = false;
+      document.body.classList.remove('hard-mode');
+      gameActive = true;
+      updateHUD();
+      preloadQueue.length = 0;
+      ensurePreload();
+      summaryClickable = false;
+      summaryEl.classList.remove("no-click");
+      summaryEl.classList.remove("show");
+      summaryEl.classList.add("hidden");
       showReady(() => {
-        timeLeft = 30;
-        score = 0;
-        isHardMode = false;
-        document.body.classList.remove('hard-mode');
         sound.start();
-        gameActive = true;
-        updateHUD();
-        preloadQueue.length = 0;
-        ensurePreload();
-        summaryClickable = false;
-        summaryEl.classList.remove("no-click");
-        summaryEl.classList.remove("show");
-        summaryEl.classList.add("hidden");
         startRound();
         clearInterval(timerId);
         timerId = setInterval(() => {
@@ -635,6 +642,9 @@
         sound.correct();
         tileEl.classList.add('correct');
         tileEl.classList.add('found');
+        if (isHardMode) {
+          tileEl.style.pointerEvents = 'none';
+        }
         foundTargets++;
         if (foundTargets === targetIndices.length) {
           score++;
@@ -644,7 +654,12 @@
           msgEl.className = 'success';
           showTimeChange(2);
           setTimeout(() => {
-            tileEl.classList.remove('correct', 'found');
+            tileEl.classList.remove('correct');
+            if (!isHardMode) {
+              tileEl.classList.remove('found');
+            } else {
+              tileEl.style.pointerEvents = '';
+            }
             if (!isHardMode && score >= HARD_MODE_THRESHOLD) {
               activateHardMode();
             }
@@ -654,7 +669,10 @@
           msgEl.textContent = '✔️ One more!';
           msgEl.className = 'success';
           setTimeout(() => {
-            tileEl.classList.remove('correct', 'found');
+            tileEl.classList.remove('correct');
+            if (!isHardMode) {
+              tileEl.classList.remove('found');
+            }
           }, 600);
         }
       } else {

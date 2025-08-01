@@ -22,6 +22,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://muffind.online/">
   <meta property="og:image" content="https://muffind.online/muffin/muffin_0001.jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6244767628762401" crossorigin="anonymous"></script>
   <style>
     :root {
@@ -45,10 +46,8 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-
-      background: linear-gradient(135deg, #fff8f2, #ffe9dd);
-
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #fff7f0, #ffe2cc);
       min-height: 100vh;
       display: flex;
       align-items: center;
@@ -58,15 +57,12 @@
 
     .container {
       background-color: var(--card-bg);
-      box-shadow: 0 8px 24px var(--shadow);
-
-      border-radius: 20px;
+      box-shadow: 0 12px 32px var(--shadow);
+      border-radius: 16px;
       border: 1px solid #ffd8b5;
-
-
-      padding: 40px 20px;
+      padding: 48px 24px;
       width: 100%;
-      max-width: 600px;
+      max-width: 550px;
       text-align: center;
     }
 
@@ -92,7 +88,7 @@
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-      gap: 12px;
+      gap: 16px;
     }
 
     @keyframes fadeIn {
@@ -122,15 +118,15 @@
     .tile {
       background-color: var(--bg-color);
       border-radius: 12px;
-
       overflow: hidden;
       cursor: pointer;
       background-size: cover;
       background-position: center;
       aspect-ratio: 1 / 1;
       animation: fadeIn 0.3s ease;
-
       transition: transform 0.2s, box-shadow 0.2s;
+      border: 1px solid #ffd8b5;
+      box-shadow: 0 4px 8px var(--shadow);
     }
 
     .tile:hover {
@@ -249,6 +245,30 @@
       pointer-events: none;
     }
 
+    #ready {
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 248, 242, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: var(--primary);
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.9);
+      transition: opacity 0.3s, transform 0.3s;
+    }
+
+    #ready.hidden {
+      display: none;
+    }
+
+    #ready.show {
+      opacity: 1;
+      transform: scale(1);
+    }
+
     #intro {
       position: fixed;
       inset: 0;
@@ -327,6 +347,7 @@
     <p>Your score: <span id="final-score"></span></p>
     <p>Tap anywhere to play again</p>
   </div>
+  <div id="ready" class="hidden"></div>
   <div id="intro" class="show no-click">
     <h2>Welcome to the fluffiest challenge! 🧁🐶</h2>
     <p>Can you guess whether each picture hides a delicious muffin or an adorable chihuahua?</p>
@@ -348,6 +369,7 @@
     const digits = 4;
     let targetType, otherType, targetIndex;
     const preloadQueue = [];
+    const MAX_PRELOAD_ROUNDS = 10;
 
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     const audioCtx = new AudioContext();
@@ -392,6 +414,7 @@
     let introClickable = false;
     const aboutEl = document.getElementById("about");
     const contactEl = document.getElementById("contact");
+    const readyEl = document.getElementById("ready");
 
     function preloadRound() {
       const tileCount = getTileCount();
@@ -429,7 +452,7 @@
     }
 
     function ensurePreload() {
-      while (preloadQueue.length < 2) {
+      while (preloadQueue.length < MAX_PRELOAD_ROUNDS) {
         preloadQueue.push(preloadRound());
       }
     }
@@ -530,25 +553,41 @@
     history.replaceState(null, "", "/");
   }
 
+  function showReady(cb) {
+      readyEl.classList.remove("hidden");
+      readyEl.textContent = "Ready";
+      requestAnimationFrame(() => readyEl.classList.add("show"));
+      setTimeout(() => {
+        readyEl.textContent = "Start!";
+        setTimeout(() => {
+          readyEl.classList.remove("show");
+          readyEl.classList.add("hidden");
+          cb();
+        }, 400);
+      }, 600);
+    }
+
   function startGame() {
-      timeLeft = 30;
-      score = 0;
-      sound.start();
-      gameActive = true;
-      updateHUD();
-      summaryClickable = false;
-      summaryEl.classList.remove("no-click");
-      summaryEl.classList.remove("show");
-      summaryEl.classList.add("hidden");
-      startRound();
-      clearInterval(timerId);
-      timerId = setInterval(() => {
-        timeLeft--;
+      showReady(() => {
+        timeLeft = 30;
+        score = 0;
+        sound.start();
+        gameActive = true;
         updateHUD();
-        if (timeLeft <= 0) {
-          endGame();
-        }
-      }, 1000);
+        summaryClickable = false;
+        summaryEl.classList.remove("no-click");
+        summaryEl.classList.remove("show");
+        summaryEl.classList.add("hidden");
+        startRound();
+        clearInterval(timerId);
+        timerId = setInterval(() => {
+          timeLeft--;
+          updateHUD();
+          if (timeLeft <= 0) {
+            endGame();
+          }
+        }, 1000);
+      });
     }
 
   function endGame() {

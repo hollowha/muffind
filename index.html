@@ -168,6 +168,23 @@
       opacity: 0.8;
     }
 
+    #links {
+      margin-top: 8px;
+      font-size: 0.8rem;
+      color: var(--secondary);
+      opacity: 0.8;
+    }
+
+    #links a {
+      color: var(--secondary);
+      text-decoration: none;
+      margin: 0 4px;
+    }
+
+    #links a:hover {
+      text-decoration: underline;
+    }
+
     #hud {
       display: flex;
       justify-content: space-between;
@@ -261,6 +278,34 @@
     #intro.no-click {
       pointer-events: none;
     }
+
+    #about, #contact {
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 248, 242, 0.95);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      font-size: 1.2rem;
+      color: var(--secondary);
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+      text-align: center;
+      padding: 0 20px;
+    }
+
+    #about.hidden, #contact.hidden {
+      display: none;
+    }
+
+    #about.show, #contact.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
   </style>
 </head>
 <body>
@@ -275,6 +320,7 @@
     <div id="game" class="grid"></div>
     <p id="message"></p>
     <div id="footer">Click the correct image to continue</div>
+    <div id="links"><a href="?about">About Us</a> | <a href="?contact">Contact Us</a></div>
   </main>
   <div id="summary" class="hidden">
     <h2>Time's up!</h2>
@@ -285,6 +331,16 @@
     <h2>Welcome, Design Star ✨</h2>
     <p>As the chief designer for Google, Apple, Figma &amp; Canva, show off your eye for detail!</p>
     <p>Tap anywhere to begin 👆</p>
+  </div>
+  <div id="about" class="hidden">
+    <h2>關於我們</h2>
+    <p>我們是來自台灣的小型遊戲開發團隊，由一群熱血的大學生組成。</p>
+    <p>點擊任意處返回遊戲</p>
+  </div>
+  <div id="contact" class="hidden">
+    <h2>聯絡我們</h2>
+    <p>歡迎寄信到 <a href="mailto:catfish1105@gmail.com">catfish1105@gmail.com</a> 與我們聯絡。</p>
+    <p>點擊任意處返回遊戲</p>
   </div>
 
   <script>
@@ -334,6 +390,8 @@
     let summaryClickable = false;
     const introEl = document.getElementById("intro");
     let introClickable = false;
+    const aboutEl = document.getElementById("about");
+    const contactEl = document.getElementById("contact");
 
     function preloadRound() {
       const tileCount = getTileCount();
@@ -450,6 +508,28 @@
     introEl.classList.add("hidden");
   }
 
+  function showAbout() {
+    aboutEl.classList.remove("hidden");
+    requestAnimationFrame(() => aboutEl.classList.add("show"));
+  }
+
+  function hideAbout() {
+    aboutEl.classList.remove("show");
+    aboutEl.classList.add("hidden");
+    history.replaceState(null, "", "/");
+  }
+
+  function showContact() {
+    contactEl.classList.remove("hidden");
+    requestAnimationFrame(() => contactEl.classList.add("show"));
+  }
+
+  function hideContact() {
+    contactEl.classList.remove("show");
+    contactEl.classList.add("hidden");
+    history.replaceState(null, "", "/");
+  }
+
   function startGame() {
       timeLeft = 30;
       score = 0;
@@ -533,7 +613,24 @@
       }
     });
 
-    window.onload = showIntro;
+    aboutEl.addEventListener("click", hideAbout);
+    contactEl.addEventListener("click", hideContact);
+    function checkPage() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.has("about")) {
+        document.title = "About Us - Muffin or Chihuahua";
+        document.querySelector('meta[name="description"]').setAttribute('content', '我們是來自台灣的小型遊戲開發團隊，由一群熱血的大學生組成。');
+        showAbout();
+      } else if (params.has("contact")) {
+        document.title = "Contact Us - Muffin or Chihuahua";
+        document.querySelector('meta[name="description"]').setAttribute('content', '歡迎寄信到 catfish1105@gmail.com 與我們聯絡。');
+        showContact();
+      } else {
+        showIntro();
+      }
+    }
+
+    window.onload = checkPage;
   </script>
 </body>
 </html>

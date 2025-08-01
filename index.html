@@ -263,6 +263,30 @@
     let targetType, otherType, targetIndex;
     const preloadQueue = [];
 
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const audioCtx = new AudioContext();
+    function playBeep(freq, duration, vol = 0.15) {
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      gain.gain.value = vol;
+      osc.start();
+      setTimeout(() => osc.stop(), duration);
+    }
+
+    const sound = {
+      start: () => playBeep(523, 200),
+      correct: () => playBeep(659, 150),
+      wrong: () => playBeep(196, 150),
+      end: () => playBeep(440, 300),
+    };
+
     let timeLeft = 20;
     let score = 0;
     let timerId;
@@ -379,9 +403,10 @@
     introEl.classList.add("hidden");
   }
 
-    function startGame() {
+  function startGame() {
       timeLeft = 20;
       score = 0;
+      sound.start();
       gameActive = true;
       updateHUD();
       summaryClickable = false;
@@ -399,8 +424,9 @@
       }, 1000);
     }
 
-    function endGame() {
+  function endGame() {
       if (!gameActive) return;
+      sound.end();
       gameActive = false;
       clearInterval(timerId);
       document.getElementById('final-score').textContent = score;
@@ -418,6 +444,7 @@
       if (!gameActive) return;
       const msgEl = document.getElementById('message');
       if (index === targetIndex) {
+        sound.correct();
         score++;
         timeLeft++;
         updateHUD();
@@ -429,6 +456,7 @@
           if (gameActive) startRound();
         }, 600);
       } else {
+        sound.wrong();
         timeLeft = Math.max(0, timeLeft - 1);
         updateHUD();
         msgEl.textContent = '❌ Try again.';

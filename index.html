@@ -31,7 +31,7 @@
       --card-bg: #fffaf5;
       --primary: #ff6b3d;
       --secondary: #734c39;
-      --muffin-color: #ff6b3d;
+      --muffin-color: #d16aff;
       --chihuahua-color: #ff8c42;
 
       --success: #28a745;
@@ -661,6 +661,7 @@
           score++;
           if (score === MEDIUM_MODE_THRESHOLD) {
             preloadQueue.length = 0;
+            ensurePreload();
           }
           timeLeft += 2;
           updateHUD();

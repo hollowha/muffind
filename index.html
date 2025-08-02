@@ -99,6 +99,19 @@
   <link rel="sitemap" type="application/xml" href="/sitemap.xml">
   <meta name="generator" content="Muffind Game Engine v2.0">
   
+  <!-- 💰 AdSense Optimization Meta Tags -->
+  <meta name="monetization" content="AdSense">
+  <meta name="ads.txt" content="/ads.txt">
+  <meta property="business:contact_data:street_address" content="Taiwan">
+  <meta property="business:contact_data:locality" content="Taiwan">
+  <meta property="business:contact_data:region" content="Taiwan">
+  <meta property="business:contact_data:postal_code" content="">
+  <meta property="business:contact_data:country_name" content="Taiwan">
+  <meta name="copyright" content="© 2025 Muffind Team. All rights reserved.">
+  <meta name="author" content="Muffind Development Team">
+  <meta name="publisher" content="Muffind Online Games">
+  <meta name="contact" content="catfish1105@gmail.com">
+  
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6244767628762401" crossorigin="anonymous"></script>
   <style>
@@ -1084,7 +1097,7 @@
       transform: translate(-50%, -200%);
     }
 
-    #summary, #intro, #about, #contact {
+    #summary, #intro, #about, #contact, #privacy, #terms, #help {
       position: fixed;
       inset: 0;
       background: rgba(255, 255, 255, 0.95);
@@ -1104,7 +1117,7 @@
       padding: var(--space-xl);
     }
 
-    #summary h2, #intro h2, #about h2, #contact h2 {
+    #summary h2, #intro h2, #about h2, #contact h2, #privacy h2, #terms h2, #help h2 {
       font-size: 2rem;
       font-weight: 700;
       color: var(--primary);
@@ -1115,18 +1128,18 @@
       background-clip: text;
     }
 
-    #summary p, #intro p, #about p, #contact p {
+    #summary p, #intro p, #about p, #contact p, #privacy p, #terms p, #help p {
       color: var(--text-secondary);
       line-height: 1.6;
       max-width: 500px;
       margin: 0 auto;
     }
 
-    #summary.hidden, #intro.hidden, #about.hidden, #contact.hidden {
+    #summary.hidden, #intro.hidden, #about.hidden, #contact.hidden, #privacy.hidden, #terms.hidden, #help.hidden {
       display: none;
     }
 
-    #summary.show, #intro.show, #about.show, #contact.show {
+    #summary.show, #intro.show, #about.show, #contact.show, #privacy.show, #terms.show, #help.show {
       opacity: 1;
       pointer-events: auto;
     }
@@ -1279,7 +1292,7 @@
         gap: 4px;
       }
       
-      #summary h2, #intro h2, #about h2, #contact h2 {
+      #summary h2, #intro h2, #about h2, #contact h2, #privacy h2, #terms h2, #help h2 {
         font-size: 1.3rem;
       }
     }
@@ -1611,11 +1624,33 @@
           <p><strong>Performance:</strong> This game improves visual discrimination, pattern recognition, and decision-making speed through engaging gameplay.</p>
         </div>
       </details>
+      
+      <!-- 📄 Site Footer with Important Links -->
+      <div style="margin-top: var(--space-xl); padding-top: var(--space-lg); border-top: 1px solid rgba(0,0,0,0.1); text-align: center; font-size: 0.8rem; opacity: 0.7;">
+        <p style="margin-bottom: var(--space-sm);">
+          <strong>Muffind</strong> - The Internet's Favorite Visual Perception Game
+        </p>
+        <p style="margin-bottom: var(--space-sm);">
+          Free online puzzle game • Educational brain training • Safe for all ages
+        </p>
+        <p style="margin-bottom: var(--space-sm);">
+          <a href="?privacy" style="color: var(--primary); text-decoration: none;">Privacy Policy</a> • 
+          <a href="?terms" style="color: var(--primary); text-decoration: none;">Terms of Service</a> • 
+          <a href="?help" style="color: var(--primary); text-decoration: none;">How to Play</a> • 
+          <a href="?contact" style="color: var(--primary); text-decoration: none;">Contact</a>
+        </p>
+        <p style="margin: 0; font-size: 0.7rem;">
+          © 2025 Muffind Team. Made with ❤️ in Taiwan. All rights reserved.
+        </p>
+      </div>
     </footer>
     
-    <nav id="links">
+    <nav id="links" role="navigation" aria-label="Site navigation">
       <a href="?about">About Us</a> | 
-      <a href="?contact">Contact Us</a>
+      <a href="?contact">Contact Us</a> | 
+      <a href="?privacy">Privacy Policy</a> | 
+      <a href="?terms">Terms of Service</a> |
+      <a href="?help">How to Play</a>
     </nav>
   </main>
   
@@ -1696,13 +1731,22 @@
       <h2>About Muffind - The Viral Image Recognition Game</h2>
       <p>We are a passionate game development team from Taiwan, dedicated to creating engaging and educational browser games. Muffind started as a fun experiment inspired by the viral "muffin or chihuahua" internet phenomenon and has grown into one of the most popular visual perception games online.</p>
       
-      <p style="margin-top: var(--space-md);">
-        <strong>Our Mission:</strong> To create accessible, fun, and brain-training games that anyone can enjoy for free. Muffind combines entertainment with cognitive benefits, helping players improve their visual discrimination skills while having fun.
-      </p>
+      <h3>Our Story</h3>
+      <p>What began as a simple challenge - "Can you tell the difference between a muffin and a chihuahua?" - has evolved into a comprehensive brain training experience. We noticed how this seemingly simple task could stump even the most observant people, and we realized the educational potential.</p>
       
-      <p style="margin-top: var(--space-md);">
-        <strong>Game Evolution:</strong> From simple image matching to progressive difficulty modes (Normal → Hard → Hell), dynamic theme switching, and mobile optimization. We continuously improve based on player feedback.
-      </p>
+      <h3>Our Mission</h3>
+      <p>To create accessible, fun, and brain-training games that anyone can enjoy for free. Muffind combines entertainment with cognitive benefits, helping players improve their visual discrimination skills while having fun. We believe learning should be engaging and accessible to everyone.</p>
+      
+      <h3>Game Evolution</h3>
+      <p>From simple image matching to progressive difficulty modes (Normal → Hard → Hell), dynamic theme switching, and mobile optimization. We continuously improve based on player feedback and educational research on visual perception training.</p>
+      
+      <h3>Educational Impact</h3>
+      <p>Research shows that visual discrimination games like Muffind can improve pattern recognition, attention to detail, and cognitive processing speed. We're proud that our game helps thousands of players sharpen their minds daily while having fun.</p>
+      
+      <h3>Technical Excellence</h3>
+      <p>Built with modern web technologies, Muffind features optimized image loading, responsive design, accessibility features, and performance optimization for smooth gameplay across all devices. We prioritize user experience and technical quality.</p>
+      
+      <p style="margin-top: var(--space-lg);"><strong>Contact:</strong> catfish1105@gmail.com</p>
       
       <p style="margin-top: var(--space-md); font-size: 0.9rem; opacity: 0.7;">
         Click anywhere to go back to the game
@@ -1715,6 +1759,165 @@
       <h2>Contact Us</h2>
       <p>Send us a message at <a href="mailto:catfish1105@gmail.com" style="color: var(--primary); text-decoration: underline;">catfish1105@gmail.com</a></p>
       <p style="margin-top: var(--space-md); font-size: 0.9rem; opacity: 0.7;">
+        Click anywhere to go back to the game
+      </p>
+    </div>
+  </div>
+
+  <!-- 📋 Privacy Policy Modal (Required for AdSense) -->
+  <div id="privacy" class="hidden">
+    <div class="modal-content" style="max-height: 80vh; overflow-y: auto;">
+      <h2>Privacy Policy</h2>
+      <p><strong>Last updated:</strong> August 2, 2025</p>
+      
+      <h3>Information We Collect</h3>
+      <p>Muffind is designed with privacy in mind. We collect minimal information to provide our service:</p>
+      <ul>
+        <li><strong>Game Data:</strong> Your scores and gameplay statistics are stored locally on your device only</li>
+        <li><strong>Technical Data:</strong> Basic technical information like browser type and screen resolution for optimization</li>
+        <li><strong>Cookies:</strong> We use essential cookies for game functionality and may use advertising cookies through Google AdSense</li>
+      </ul>
+      
+      <h3>How We Use Information</h3>
+      <ul>
+        <li>To provide and improve the gaming experience</li>
+        <li>To display relevant advertisements through Google AdSense</li>
+        <li>To analyze game performance and optimize user experience</li>
+        <li>To ensure website security and prevent abuse</li>
+      </ul>
+      
+      <h3>Third-Party Services</h3>
+      <p><strong>Google AdSense:</strong> We use Google AdSense to display advertisements. Google may collect and use data as described in their privacy policy. You can opt-out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank">Google Ad Settings</a>.</p>
+      <p><strong>Google Fonts:</strong> We use Google Fonts for typography, which may collect usage data.</p>
+      
+      <h3>Data Security</h3>
+      <p>We implement appropriate technical measures to protect your information. Game data is stored locally on your device and is not transmitted to our servers.</p>
+      
+      <h3>Children's Privacy</h3>
+      <p>Our game is suitable for all ages. We do not knowingly collect personal information from children under 13. If you believe we have collected such information, please contact us.</p>
+      
+      <h3>Your Rights</h3>
+      <p>You have the right to:</p>
+      <ul>
+        <li>Clear your local game data at any time through your browser settings</li>
+        <li>Disable cookies through your browser settings</li>
+        <li>Contact us with privacy-related questions</li>
+      </ul>
+      
+      <h3>Contact Information</h3>
+      <p>For privacy-related questions, contact us at: <a href="mailto:catfish1105@gmail.com">catfish1105@gmail.com</a></p>
+      
+      <p style="margin-top: var(--space-lg); font-size: 0.9rem; opacity: 0.7;">
+        Click anywhere to go back to the game
+      </p>
+    </div>
+  </div>
+
+  <!-- 📋 Terms of Service Modal (Required for AdSense) -->
+  <div id="terms" class="hidden">
+    <div class="modal-content" style="max-height: 80vh; overflow-y: auto;">
+      <h2>Terms of Service</h2>
+      <p><strong>Last updated:</strong> August 2, 2025</p>
+      
+      <h3>Acceptance of Terms</h3>
+      <p>By accessing and using Muffind, you accept and agree to be bound by the terms and provision of this agreement.</p>
+      
+      <h3>Use of the Service</h3>
+      <p>Muffind is a free online image recognition game. You may:</p>
+      <ul>
+        <li>Play the game for personal entertainment</li>
+        <li>Share your scores on social media</li>
+        <li>Access the game from any compatible device</li>
+      </ul>
+      
+      <p>You may not:</p>
+      <ul>
+        <li>Use automated scripts or bots to play the game</li>
+        <li>Attempt to reverse engineer or copy the game</li>
+        <li>Use the service for any illegal or unauthorized purpose</li>
+        <li>Interfere with or disrupt the service</li>
+      </ul>
+      
+      <h3>Intellectual Property</h3>
+      <p>The game design, code, and original content are owned by the Muffind development team. Images used in the game are sourced from public datasets and used under fair use principles for educational and entertainment purposes.</p>
+      
+      <h3>Advertising</h3>
+      <p>We display advertisements through Google AdSense to support the free service. By using our service, you agree to the display of such advertisements.</p>
+      
+      <h3>Disclaimer</h3>
+      <p>The service is provided "as is" without any warranties. We do not guarantee uninterrupted or error-free service.</p>
+      
+      <h3>Limitation of Liability</h3>
+      <p>We shall not be liable for any direct, indirect, incidental, special, or consequential damages resulting from the use of our service.</p>
+      
+      <h3>Changes to Terms</h3>
+      <p>We reserve the right to modify these terms at any time. Continued use of the service constitutes acceptance of updated terms.</p>
+      
+      <h3>Contact Information</h3>
+      <p>For questions about these terms, contact us at: <a href="mailto:catfish1105@gmail.com">catfish1105@gmail.com</a></p>
+      
+      <p style="margin-top: var(--space-lg); font-size: 0.9rem; opacity: 0.7;">
+        Click anywhere to go back to the game
+      </p>
+    </div>
+  </div>
+
+  <!-- 🎮 How to Play Modal (Content Quality Enhancement) -->
+  <div id="help" class="hidden">
+    <div class="modal-content" style="max-height: 80vh; overflow-y: auto;">
+      <h2>How to Play Muffind</h2>
+      
+      <h3>🎯 Basic Gameplay</h3>
+      <p>Muffind challenges your visual perception skills by asking you to identify specific targets in a grid of images:</p>
+      <ol>
+        <li>Look at the instruction at the top: "Find the muffins 🧁" or "Find the chihuahuas 🐶"</li>
+        <li>Click on the correct images that match the target type</li>
+        <li>You have 30 seconds per round</li>
+        <li>Each correct click increases your score</li>
+        <li>Wrong clicks end the game</li>
+      </ol>
+      
+      <h3>🔥 Difficulty Modes</h3>
+      <p><strong>Normal Mode (0-9 points):</strong> Find 1 target per round</p>
+      <p><strong>Hard Mode (10-19 points):</strong> Find 2 targets per round - activated automatically at 10 points</p>
+      <p><strong>Hell Mode (20+ points):</strong> Find 3 targets per round - the ultimate challenge!</p>
+      
+      <h3>🎨 Visual Themes</h3>
+      <p>As you become more experienced, the game helps you with visual cues:</p>
+      <ul>
+        <li><strong>Muffin rounds:</strong> Warm orange/brown theme</li>
+        <li><strong>Chihuahua rounds:</strong> Golden yellow theme</li>
+        <li><strong>Hell Mode:</strong> Intense red theme with special effects</li>
+      </ul>
+      
+      <h3>💡 Pro Tips</h3>
+      <ul>
+        <li><strong>Look for texture:</strong> Muffins have cake-like texture, chihuahuas have fur</li>
+        <li><strong>Check for features:</strong> Chihuahuas have eyes, ears, and facial features</li>
+        <li><strong>Use themes:</strong> Color themes help experienced players identify targets faster</li>
+        <li><strong>Stay calm:</strong> In hard/hell modes, take a moment to scan systematically</li>
+        <li><strong>Practice:</strong> The more you play, the better your visual discrimination becomes</li>
+      </ul>
+      
+      <h3>🧠 Educational Benefits</h3>
+      <p>Playing Muffind helps improve:</p>
+      <ul>
+        <li>Visual perception and discrimination</li>
+        <li>Pattern recognition skills</li>
+        <li>Attention to detail</li>
+        <li>Quick decision-making</li>
+        <li>Concentration and focus</li>
+      </ul>
+      
+      <h3>🏆 Scoring System</h3>
+      <p>Points are awarded based on difficulty:</p>
+      <ul>
+        <li>Normal Mode: 1 point per correct target</li>
+        <li>Hard Mode: 2 points per correct target</li>
+        <li>Hell Mode: 3 points per correct target</li>
+      </ul>
+      
+      <p style="margin-top: var(--space-lg); font-size: 0.9rem; opacity: 0.7;">
         Click anywhere to go back to the game
       </p>
     </div>
@@ -1782,6 +1985,9 @@
     let introClickable = false;
     const aboutEl = document.getElementById("about");
     const contactEl = document.getElementById("contact");
+    const privacyEl = document.getElementById("privacy");
+    const termsEl = document.getElementById("terms");
+    const helpEl = document.getElementById("help");
     const readyEl = document.getElementById("ready");
 
     // 記憶體管理：清理舊的快取
@@ -2157,6 +2363,39 @@
     history.replaceState(null, "", "/");
   }
 
+  function showPrivacy() {
+    privacyEl.classList.remove("hidden");
+    requestAnimationFrame(() => privacyEl.classList.add("show"));
+  }
+
+  function hidePrivacy() {
+    privacyEl.classList.remove("show");
+    privacyEl.classList.add("hidden");
+    history.replaceState(null, "", "/");
+  }
+
+  function showTerms() {
+    termsEl.classList.remove("hidden");
+    requestAnimationFrame(() => termsEl.classList.add("show"));
+  }
+
+  function hideTerms() {
+    termsEl.classList.remove("show");
+    termsEl.classList.add("hidden");
+    history.replaceState(null, "", "/");
+  }
+
+  function showHelp() {
+    helpEl.classList.remove("hidden");
+    requestAnimationFrame(() => helpEl.classList.add("show"));
+  }
+
+  function hideHelp() {
+    helpEl.classList.remove("show");
+    helpEl.classList.add("hidden");
+    history.replaceState(null, "", "/");
+  }
+
   function activateHardMode() {
     isHardMode = true;
     document.body.classList.add('hard-mode');
@@ -2382,16 +2621,55 @@
 
     aboutEl.addEventListener("click", hideAbout);
     contactEl.addEventListener("click", hideContact);
+    privacyEl.addEventListener("click", hidePrivacy);
+    termsEl.addEventListener("click", hideTerms);
+    helpEl.addEventListener("click", hideHelp);
+    
+    // 🍪 Cookie Consent (AdSense Requirement)
+    function showCookieConsent() {
+      if (!localStorage.getItem('muffind_cookie_consent')) {
+        const cookieBar = document.createElement('div');
+        cookieBar.innerHTML = `
+          <div style="position: fixed; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.95); color: white; padding: 15px; text-align: center; z-index: 10000; font-size: 0.9rem;">
+            <p style="margin: 0 0 10px 0;">🍪 We use cookies to enhance your gaming experience and show relevant ads. By continuing to play, you consent to our use of cookies.</p>
+            <button onclick="acceptCookies()" style="background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; margin-right: 10px;">Accept</button>
+            <a href="?privacy" style="color: #ccc; text-decoration: underline;">Privacy Policy</a>
+          </div>
+        `;
+        document.body.appendChild(cookieBar);
+      }
+    }
+    
+    function acceptCookies() {
+      localStorage.setItem('muffind_cookie_consent', 'true');
+      const cookieBar = document.querySelector('[style*="position: fixed; bottom: 0"]');
+      if (cookieBar) cookieBar.remove();
+    }
+    
+    // Make acceptCookies globally available
+    window.acceptCookies = acceptCookies;
     function checkPage() {
       const params = new URLSearchParams(window.location.search);
       if (params.has("about")) {
         document.title = "About Us - Muffind";
-        document.querySelector('meta[name="description"]').setAttribute('content', 'We are a small game development team from Taiwan made up of passionate university students.');
+        document.querySelector('meta[name="description"]').setAttribute('content', 'Learn about the passionate game development team behind Muffind, the viral muffin vs chihuahua recognition game.');
         showAbout();
       } else if (params.has("contact")) {
         document.title = "Contact Us - Muffind";
-        document.querySelector('meta[name="description"]').setAttribute('content', 'Feel free to email us at catfish1105@gmail.com.');
+        document.querySelector('meta[name="description"]').setAttribute('content', 'Get in touch with the Muffind team. Email us at catfish1105@gmail.com for support or feedback.');
         showContact();
+      } else if (params.has("privacy")) {
+        document.title = "Privacy Policy - Muffind";
+        document.querySelector('meta[name="description"]').setAttribute('content', 'Read our privacy policy to understand how Muffind protects your data and respects your privacy while you play.');
+        showPrivacy();
+      } else if (params.has("terms")) {
+        document.title = "Terms of Service - Muffind";
+        document.querySelector('meta[name="description"]').setAttribute('content', 'Review the terms of service for playing Muffind, the free online muffin vs chihuahua recognition game.');
+        showTerms();
+      } else if (params.has("help")) {
+        document.title = "How to Play - Muffind";
+        document.querySelector('meta[name="description"]').setAttribute('content', 'Learn how to play Muffind with tips, strategies, and detailed gameplay instructions for all difficulty modes.');
+        showHelp();
       } else {
         showIntro();
       }
@@ -2401,6 +2679,9 @@
       const hardModeProgress = document.getElementById('hard-mode-progress');
       difficultyIndicator.classList.add('hidden');
       hardModeProgress.classList.add('hidden');
+      
+      // Show cookie consent if needed
+      setTimeout(showCookieConsent, 1000);
     }
 
     window.onload = checkPage;

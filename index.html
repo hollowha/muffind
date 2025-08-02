@@ -2149,32 +2149,44 @@
       targetIndices = round.targetIndices;
       foundTargets = 0;
 
-      // 🎨 主題切換邏輯 - 讓整個畫面切換到對應的顏色主題
-      const body = document.body;
-      const currentTheme = targetType === 'muffin' ? 'theme-muffin' : 'theme-chihuahua';
-      
-      // 添加過渡效果
-      body.classList.add('theme-transition');
-      
-      // 移除舊主題
-      body.classList.remove('theme-muffin', 'theme-chihuahua');
-      
-      // 使用 requestAnimationFrame 確保平滑過渡
-      requestAnimationFrame(() => {
-        body.classList.add(currentTheme);
-        
-        // 播放主題切換音效
-        if (targetType === 'muffin') {
-          sound.themeMuffin();
+        // 🎨 主題切換邏輯 - 讓整個畫面切換到對應的顏色主題
+        const body = document.body;
+        const currentTheme = targetType === 'muffin' ? 'theme-muffin' : 'theme-chihuahua';
+        const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+        if (!isMobile) {
+          // 添加過渡效果
+          body.classList.add('theme-transition');
+
+          // 移除舊主題
+          body.classList.remove('theme-muffin', 'theme-chihuahua');
+
+          // 使用 requestAnimationFrame 確保平滑過渡
+          requestAnimationFrame(() => {
+            body.classList.add(currentTheme);
+
+            // 播放主題切換音效
+            if (targetType === 'muffin') {
+              sound.themeMuffin();
+            } else {
+              sound.themeChihuahua();
+            }
+
+            // 移除過渡類別，避免後續操作受影響
+            setTimeout(() => {
+              body.classList.remove('theme-transition');
+            }, 800);
+          });
         } else {
-          sound.themeChihuahua();
+          // 在手機上保持中性色背景，僅透過標題顯示差異
+          body.classList.remove('theme-muffin', 'theme-chihuahua', 'theme-transition');
+
+          if (targetType === 'muffin') {
+            sound.themeMuffin();
+          } else {
+            sound.themeChihuahua();
+          }
         }
-        
-        // 移除過渡類別，避免後續操作受影響
-        setTimeout(() => {
-          body.classList.remove('theme-transition');
-        }, 800);
-      });
 
       const targetEmoji = targetType === 'muffin' ? '🧁' : '🐶';
 

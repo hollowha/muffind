@@ -1242,15 +1242,27 @@
       
       /* HUD 優化 */
       #hud {
-        flex-direction: column;
-        gap: var(--space-xs);
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: nowrap;
+        gap: var(--space-sm);
         text-align: center;
         padding: var(--space-sm) var(--space-md);
       }
-      
+
       #hard-mode-progress {
         padding: var(--space-xs) var(--space-sm);
         font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        gap: var(--space-xs);
+        min-width: 0;
+      }
+
+      #hard-mode-progress .progress-bar {
+        width: 80px;
+        margin-bottom: 0;
       }
     }
 
@@ -1301,7 +1313,11 @@
         padding: var(--space-xs) var(--space-sm);
         gap: 4px;
       }
-      
+
+      #hard-mode-progress .progress-bar {
+        width: 60px;
+      }
+
       #summary h2, #intro h2, #about h2, #contact h2, #privacy h2, #terms h2, #help h2 {
         font-size: 1.3rem;
       }

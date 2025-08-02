@@ -26,12 +26,37 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6244767628762401" crossorigin="anonymous"></script>
   <style>
     :root {
-      /* 暖色系色彩系統 */
-      --bg-gradient: linear-gradient(135deg, #fff9f5 0%, #ffeee6 50%, #fff2e8 100%);
-      --card-bg: rgba(255, 248, 240, 0.95);
-      --card-border: rgba(255, 204, 153, 0.3);
+      /* 中性暖色系色彩系統 */
+      --neutral-bg-gradient: linear-gradient(135deg, #fff9f5 0%, #ffeee6 50%, #fff2e8 100%);
+      --neutral-card-bg: rgba(255, 248, 240, 0.95);
+      --neutral-card-border: rgba(255, 204, 153, 0.3);
       
-      /* 主要色彩 - 暖橙色系 */
+      /* 🧁 Muffin 主題色系 - 深棕橘色 */
+      --muffin-primary: #d84315;
+      --muffin-secondary: #bf360c;
+      --muffin-light: #ff5722;
+      --muffin-glow: rgba(216, 67, 21, 0.4);
+      --muffin-bg-gradient: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 50%, #ffcc80 100%);
+      --muffin-card-bg: rgba(255, 235, 215, 0.95);
+      --muffin-card-border: rgba(216, 67, 21, 0.4);
+      --muffin-text: #3e2723;
+      --muffin-text-light: #5d4037;
+      
+      /* 🐶 Chihuahua 主題色系 - 金黃色 */
+      --chihuahua-primary: #ff8f00;
+      --chihuahua-secondary: #ff6f00;
+      --chihuahua-light: #ffb74d;
+      --chihuahua-glow: rgba(255, 143, 0, 0.4);
+      --chihuahua-bg-gradient: linear-gradient(135deg, #fffde7 0%, #fff9c4 50%, #fff176 100%);
+      --chihuahua-card-bg: rgba(255, 248, 225, 0.95);
+      --chihuahua-card-border: rgba(255, 143, 0, 0.4);
+      --chihuahua-text: #3e2723;
+      --chihuahua-text-light: #5d4037;
+      
+      /* 動態色彩變數 - 會根據目標類型切換 */
+      --bg-gradient: var(--neutral-bg-gradient);
+      --card-bg: var(--neutral-card-bg);
+      --card-border: var(--neutral-card-border);
       --primary: #ff6b35;
       --primary-light: #ff8a65;
       --primary-dark: #e64a19;
@@ -44,14 +69,7 @@
       --text-secondary: #5d4037;
       --text-muted: #8d6e63;
       
-      /* 功能色彩 - 暖色系 */
-      --muffin-color: #d84315;
-      --muffin-light: #ff5722;
-      --muffin-glow: rgba(216, 67, 21, 0.4);
-      --chihuahua-color: #ff8f00;
-      --chihuahua-light: #ffb74d;
-      --chihuahua-glow: rgba(255, 143, 0, 0.4);
-      
+      /* 功能色彩保持不變 */
       --success: #4caf50;
       --success-light: #81c784;
       --success-glow: rgba(76, 175, 80, 0.3);
@@ -67,6 +85,16 @@
       --hard-mode-bg: linear-gradient(135deg, #ffebee 0%, #ffcdd2 50%, #ffcdd2 100%);
       --hard-mode-indicator: #ff1744;
       --hard-mode-glow: rgba(191, 54, 12, 0.4);
+      
+      /* 🔥 地獄模式專用色彩 - 深紅黑色系 */
+      --hell-mode-primary: #b71c1c;
+      --hell-mode-secondary: #d32f2f;
+      --hell-mode-tertiary: #f44336;
+      --hell-mode-bg: linear-gradient(135deg, #ffebee 0%, #ffcdd2 30%, #ef9a9a 70%, #e57373 100%);
+      --hell-mode-indicator: #c62828;
+      --hell-mode-glow: rgba(183, 28, 28, 0.6);
+      --hell-mode-text: #fff;
+      --hell-mode-shadow: 0 0 30px rgba(183, 28, 28, 0.8);
       
       /* 陰影系統 - 暖色調 */
       --shadow-sm: 0 1px 2px 0 rgba(139, 85, 36, 0.15);
@@ -104,10 +132,85 @@
       align-items: center;
       justify-content: center;
       color: var(--text-primary);
-      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
       padding: var(--space-md);
       position: relative;
       overflow-x: hidden;
+    }
+
+    /* 🧁 Muffin 主題 */
+    body.theme-muffin {
+      --bg-gradient: var(--muffin-bg-gradient);
+      --card-bg: var(--muffin-card-bg);
+      --card-border: var(--muffin-card-border);
+      --primary: var(--muffin-primary);
+      --primary-light: var(--muffin-light);
+      --primary-dark: var(--muffin-secondary);
+      --primary-glow: var(--muffin-glow);
+      --text-primary: var(--muffin-text);
+      --text-secondary: var(--muffin-text-light);
+    }
+
+    /* 🐶 Chihuahua 主題 */
+    body.theme-chihuahua {
+      --bg-gradient: var(--chihuahua-bg-gradient);
+      --card-bg: var(--chihuahua-card-bg);
+      --card-border: var(--chihuahua-card-border);
+      --primary: var(--chihuahua-primary);
+      --primary-light: var(--chihuahua-light);
+      --primary-dark: var(--chihuahua-secondary);
+      --primary-glow: var(--chihuahua-glow);
+      --text-primary: var(--chihuahua-text);
+      --text-secondary: var(--chihuahua-text-light);
+    }
+
+    /* 主題切換動畫 */
+    body.theme-transition {
+      transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    /* 主題專用背景裝飾 */
+    body.theme-muffin::before {
+      background: 
+        radial-gradient(circle at 25% 25%, rgba(216, 67, 21, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(191, 54, 12, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(255, 87, 34, 0.08) 0%, transparent 70%);
+      animation: float 25s ease-in-out infinite, muffinGlow 4s ease-in-out infinite alternate;
+    }
+
+    body.theme-chihuahua::before {
+      background: 
+        radial-gradient(circle at 25% 25%, rgba(255, 143, 0, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(255, 111, 0, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(255, 183, 77, 0.08) 0%, transparent 70%);
+      animation: float 25s ease-in-out infinite, chihuahuaGlow 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes muffinGlow {
+      0% { opacity: 0.7; filter: hue-rotate(0deg); }
+      100% { opacity: 1; filter: hue-rotate(5deg); }
+    }
+
+    @keyframes chihuahuaGlow {
+      0% { opacity: 0.7; filter: hue-rotate(0deg); }
+      100% { opacity: 1; filter: hue-rotate(-5deg); }
+    }
+
+    /* 主題專用容器增強 */
+    body.theme-muffin .container {
+      box-shadow: var(--shadow-xl), 0 0 30px var(--muffin-glow);
+    }
+
+    body.theme-chihuahua .container {
+      box-shadow: var(--shadow-xl), 0 0 30px var(--chihuahua-glow);
+    }
+
+    body.theme-muffin .container::before {
+      background: linear-gradient(90deg, transparent, var(--muffin-glow), var(--muffin-primary), var(--muffin-glow), transparent);
+    }
+
+    body.theme-chihuahua .container::before {
+      background: linear-gradient(90deg, transparent, var(--chihuahua-glow), var(--chihuahua-primary), var(--chihuahua-glow), transparent);
     }
 
     /* 暖色系背景裝飾元素 */
@@ -168,6 +271,60 @@
       100% { opacity: 1; }
     }
 
+    /* 🔥 地獄模式的視覺強化 */
+    body.hell-mode {
+      background: var(--hell-mode-bg);
+      animation: hellModeIntro 1.5s ease-out;
+    }
+
+    @keyframes hellModeIntro {
+      0% { 
+        background-color: rgba(183, 28, 28, 0.1);
+        transform: scale(1.05);
+        filter: brightness(0.9);
+      }
+      25% { 
+        background-color: rgba(183, 28, 28, 0.2);
+        transform: scale(0.95);
+        filter: brightness(1.1);
+      }
+      50% { 
+        background-color: rgba(198, 40, 40, 0.25);
+        transform: scale(1.02);
+        filter: brightness(0.8);
+      }
+      75% { 
+        background-color: rgba(211, 47, 47, 0.15);
+        transform: scale(0.98);
+        filter: brightness(1.05);
+      }
+      100% { 
+        background-color: transparent;
+        transform: scale(1);
+        filter: brightness(1);
+      }
+    }
+
+    body.hell-mode::before {
+      background: 
+        radial-gradient(circle at 20% 30%, rgba(183, 28, 28, 0.25) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(198, 40, 40, 0.2) 0%, transparent 45%),
+        radial-gradient(circle at 50% 20%, rgba(211, 47, 47, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 30% 80%, rgba(244, 67, 54, 0.12) 0%, transparent 55%);
+      animation: float 15s ease-in-out infinite, hellModeGlow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes hellModeGlow {
+      0% { 
+        opacity: 0.9; 
+        filter: hue-rotate(0deg) saturate(1.2);
+      }
+      100% { 
+        opacity: 1; 
+        filter: hue-rotate(5deg) saturate(1.4);
+      }
+    }
+
     .container {
       background: var(--card-bg);
       backdrop-filter: blur(20px);
@@ -220,6 +377,65 @@
       50% { opacity: 1; }
     }
 
+    /* 🔥 地獄模式容器增強 */
+    body.hell-mode .container {
+      border-color: var(--hell-mode-indicator);
+      box-shadow: var(--shadow-xl), var(--hell-mode-shadow);
+      animation: hellModeContainer 1.5s ease-in-out infinite alternate;
+      background: rgba(255, 245, 245, 0.98);
+    }
+
+    @keyframes hellModeContainer {
+      0% { 
+        box-shadow: var(--shadow-xl), 0 0 20px var(--hell-mode-glow);
+        transform: scale(1);
+      }
+      100% { 
+        box-shadow: var(--shadow-xl), 0 0 40px var(--hell-mode-glow);
+        transform: scale(1.01);
+      }
+    }
+
+    body.hell-mode .container::before {
+      background: linear-gradient(90deg, transparent, var(--hell-mode-indicator), var(--hell-mode-primary), var(--hell-mode-indicator), transparent);
+      animation: hellModeBorder 1s ease-in-out infinite;
+      height: 3px;
+    }
+
+    @keyframes hellModeBorder {
+      0%, 100% { 
+        opacity: 0.8; 
+        filter: brightness(1);
+      }
+      50% { 
+        opacity: 1; 
+        filter: brightness(1.3);
+      }
+    }
+
+    /* 🎨 主題與困難模式的組合效果 */
+    body.theme-muffin.hard-mode {
+      --hard-mode-primary: var(--muffin-secondary);
+      --hard-mode-secondary: var(--muffin-primary);
+      --hard-mode-indicator: var(--muffin-primary);
+      --hard-mode-glow: var(--muffin-glow);
+    }
+
+    body.theme-chihuahua.hard-mode {
+      --hard-mode-primary: var(--chihuahua-secondary);
+      --hard-mode-secondary: var(--chihuahua-primary);
+      --hard-mode-indicator: var(--chihuahua-primary);
+      --hard-mode-glow: var(--chihuahua-glow);
+    }
+
+    body.theme-muffin.hard-mode .container::before {
+      background: linear-gradient(90deg, transparent, var(--muffin-glow), var(--muffin-primary), var(--muffin-glow), transparent);
+    }
+
+    body.theme-chihuahua.hard-mode .container::before {
+      background: linear-gradient(90deg, transparent, var(--chihuahua-glow), var(--chihuahua-primary), var(--chihuahua-glow), transparent);
+    }
+
     @media (max-width: 640px) {
       .container {
         margin: var(--space-md);
@@ -235,11 +451,28 @@
       color: var(--text-primary);
       letter-spacing: -0.025em;
       line-height: 1.2;
+      position: relative;
+      padding: var(--space-md) 0;
+      border-radius: var(--radius-md);
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* 🎨 主題專用標題效果 */
+    body.theme-muffin h1 {
+      background: linear-gradient(135deg, var(--muffin-card-bg), rgba(255, 235, 215, 0.7));
+      box-shadow: 0 2px 10px var(--muffin-glow);
+      border: 2px solid rgba(216, 67, 21, 0.2);
+    }
+
+    body.theme-chihuahua h1 {
+      background: linear-gradient(135deg, var(--chihuahua-card-bg), rgba(255, 248, 225, 0.7));
+      box-shadow: 0 2px 10px var(--chihuahua-glow);
+      border: 2px solid rgba(255, 143, 0, 0.2);
     }
 
     /* 困難模式指示器 */
     #difficulty-indicator {
-      margin-bottom: var(--space-lg);
+      margin-bottom: var(--space-md);
       animation: slideDown 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
@@ -285,19 +518,110 @@
       font-weight: 700;
     }
 
-    /* 困難模式進度指示器 */
+    /* 🔥 地獄模式指示器 */
+    #hell-indicator {
+      margin-bottom: var(--space-md);
+      animation: slideDown 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .hell-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-sm);
+      background: linear-gradient(135deg, var(--hell-mode-primary), var(--hell-mode-secondary), var(--hell-mode-tertiary));
+      color: var(--hell-mode-text);
+      padding: var(--space-md) var(--space-xl);
+      border-radius: var(--radius-xl);
+      font-weight: 700;
+      font-size: 1rem;
+      box-shadow: var(--shadow-lg), var(--hell-mode-shadow);
+      animation: hell-pulse-glow 1.5s ease-in-out infinite alternate;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    @keyframes hell-pulse-glow {
+      0% { 
+        box-shadow: var(--shadow-lg), 0 0 20px var(--hell-mode-glow);
+        transform: scale(1);
+        filter: brightness(1);
+      }
+      100% { 
+        box-shadow: var(--shadow-lg), 0 0 50px var(--hell-mode-glow);
+        transform: scale(1.05);
+        filter: brightness(1.2);
+      }
+    }
+
+    .hell-icon {
+      font-size: 1.3em;
+      animation: hell-flicker 1s ease-in-out infinite;
+    }
+
+    @keyframes hell-flicker {
+      0%, 100% { 
+        opacity: 1; 
+        filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
+      }
+      25% { 
+        opacity: 0.7; 
+        filter: drop-shadow(0 0 8px rgba(255, 255, 255, 1));
+      }
+      50% { 
+        opacity: 1; 
+        filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.6));
+      }
+      75% { 
+        opacity: 0.8; 
+        filter: drop-shadow(0 0 10px rgba(255, 255, 255, 1.2));
+      }
+    }
+
+    .hell-target-count {
+      background: rgba(0, 0, 0, 0.3);
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* 困難模式進度指示器 - 在HUD中 */
     #hard-mode-progress {
-      margin-bottom: var(--space-lg);
+      margin: 0;
       text-align: center;
+      padding: var(--space-sm) var(--space-md);
+      background: rgba(255, 245, 238, 0.9);
+      border-radius: var(--radius-md);
+      border: 2px solid rgba(191, 54, 12, 0.3);
+      backdrop-filter: blur(15px);
+      box-shadow: var(--shadow-sm);
+      animation: slideDown 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      min-width: 120px;
+    }
+
+    body.hard-mode #hard-mode-progress {
+      background: rgba(255, 235, 228, 0.9);
+      border-color: var(--hard-mode-indicator);
+      box-shadow: var(--shadow-lg), 0 0 10px var(--hard-mode-glow);
+    }
+
+    @keyframes slideUp {
+      0% { 
+        opacity: 0; 
+        transform: translateY(20px) scale(0.95); 
+      }
+      100% { 
+        opacity: 1; 
+        transform: translateY(0) scale(1); 
+      }
     }
 
     .progress-bar {
       width: 100%;
-      height: 8px;
+      height: 6px;
       background: rgba(191, 54, 12, 0.2);
       border-radius: var(--radius-sm);
       overflow: hidden;
-      margin-bottom: var(--space-sm);
+      margin-bottom: var(--space-xs);
       position: relative;
     }
 
@@ -328,7 +652,7 @@
     }
 
     .progress-text {
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       font-weight: 600;
       color: var(--hard-mode-primary);
     }
@@ -345,19 +669,21 @@
     }
 
     .target-muffin {
-      color: var(--muffin-color);
-      background: linear-gradient(135deg, var(--muffin-color), var(--muffin-light));
+      color: var(--muffin-primary);
+      background: linear-gradient(135deg, var(--muffin-primary), var(--muffin-light));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      text-shadow: 0 2px 4px var(--muffin-glow);
     }
 
     .target-chihuahua {
-      color: var(--chihuahua-color);
-      background: linear-gradient(135deg, var(--chihuahua-color), var(--chihuahua-light));
+      color: var(--chihuahua-primary);
+      background: linear-gradient(135deg, var(--chihuahua-primary), var(--chihuahua-light));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      text-shadow: 0 2px 4px var(--chihuahua-glow);
     }
 
     .prefix {
@@ -414,6 +740,31 @@
       transform: translateY(-6px) scale(1.03);
       box-shadow: var(--shadow-lg), var(--shadow-glow);
       border-color: var(--primary-glow);
+    }
+
+    /* 🎨 主題專用瓦片效果 */
+    body.theme-muffin .tile:hover {
+      box-shadow: var(--shadow-lg), 0 0 25px var(--muffin-glow);
+      border-color: var(--muffin-primary);
+    }
+
+    body.theme-chihuahua .tile:hover {
+      box-shadow: var(--shadow-lg), 0 0 25px var(--chihuahua-glow);
+      border-color: var(--chihuahua-primary);
+    }
+
+    body.theme-muffin .tile::before {
+      background: linear-gradient(135deg, 
+        rgba(216, 67, 21, 0.15) 0%, 
+        rgba(191, 54, 12, 0.08) 50%, 
+        transparent 100%);
+    }
+
+    body.theme-chihuahua .tile::before {
+      background: linear-gradient(135deg, 
+        rgba(255, 143, 0, 0.15) 0%, 
+        rgba(255, 111, 0, 0.08) 50%, 
+        transparent 100%);
     }
 
     .tile:hover::before {
@@ -574,6 +925,7 @@
       backdrop-filter: blur(15px);
       box-shadow: var(--shadow-md);
       transition: all 0.3s ease;
+      gap: var(--space-md);
     }
 
     /* 困難模式 HUD 增強 */
@@ -900,24 +1252,34 @@
         </div>
       </div>
       
+      <!-- 🔥 Hell Mode Indicator -->
+      <div id="hell-indicator" class="hidden">
+        <div class="hell-badge">
+          <span class="hell-icon">💀</span>
+          <span>HELL MODE</span>
+          <span class="hell-target-count">Find <span id="hell-targets-needed">3</span>!</span>
+        </div>
+      </div>
+      
       <div id="hud">
         <div id="time-display">
           <span style="font-size: 0.9rem; opacity: 0.8;">Time:</span>
           <span id="timer">30</span>s
           <span id="time-change"></span>
         </div>
+        
+        <!-- Hard Mode Progress Indicator - In HUD -->
+        <div id="hard-mode-progress" class="hidden">
+          <div class="progress-bar">
+            <div class="progress-fill"></div>
+          </div>
+          <span class="progress-text">Found <span id="found-count">0</span> / <span id="total-targets">2</span></span>
+        </div>
+        
         <div style="display: flex; align-items: center; gap: 8px;">
           <span style="font-size: 0.9rem; opacity: 0.8;">Score:</span>
           <span id="score" style="font-size: 1.4rem; font-weight: 700; color: var(--primary);">0</span>
         </div>
-      </div>
-      
-      <!-- Hard Mode Progress Indicator -->
-      <div id="hard-mode-progress" class="hidden">
-        <div class="progress-bar">
-          <div class="progress-fill"></div>
-        </div>
-        <span class="progress-text">Found <span id="found-count">0</span> / <span id="total-targets">2</span></span>
       </div>
     </header>
 
@@ -947,8 +1309,8 @@
   
   <div id="intro" class="show no-click">
     <div class="modal-content">
-      <h2>Welcome to the cutest game ever! 🧁🐶</h2>
-      <p>Can you tell if each picture has a yummy muffin or a cute chihuahua?</p>
+      <h2>Welcome to Muffind! 🎯</h2>
+      <p>Test your skills: Find 🧁 <strong>muffins</strong> or 🐶 <strong>chihuahuas</strong> as shown!</p>
       <p style="margin-top: var(--space-lg); font-size: 1rem; opacity: 0.8;">
         👆 Click anywhere to start playing
       </p>
@@ -981,7 +1343,9 @@
     let targetType, otherType, targetIndices = [];
     let foundTargets = 0;
     let isHardMode = false;
+    let isHellMode = false; // 🔥 地獄模式
     const HARD_MODE_THRESHOLD = 10;
+    const HELL_MODE_THRESHOLD = 20; // 🔥 地獄模式閾值
     const MEDIUM_MODE_THRESHOLD = 2;
     const preloadQueue = [];
     const MAX_PRELOAD_ROUNDS = 15; // 增加預載入回合數
@@ -1020,6 +1384,9 @@
       correct: () => playMelody([[659, 80], [880, 120]]),
       wrong: () => playMelody([[196, 150], [131, 200]]),
       end: () => playMelody([[440, 150], [349, 150], [262, 300]]),
+      themeMuffin: () => playMelody([[392, 100], [440, 100], [523, 150]]), // G-A-C 暖調
+      themeChihuahua: () => playMelody([[523, 100], [587, 100], [659, 150]]), // C-D-E 明亮調
+      hellMode: () => playMelody([[220, 200], [196, 200], [174, 200], [165, 300]]), // 🔥 地獄模式 - 低沉威脅音
     };
 
     let timeLeft = 30;
@@ -1079,11 +1446,19 @@
       return Promise.all(paths.map(path => loadImage(path)));
     }
 
-    function preloadRound(hard = false) {
+    function preloadRound(hard = false, hell = false) {
       const tileCount = getTileCount();
       const roundTargetType = Math.random() < 0.5 ? 'chihuahua' : 'muffin';
       const roundOtherType = roundTargetType === 'chihuahua' ? 'muffin' : 'chihuahua';
-      const targetCount = hard ? 2 : 1;
+      
+      // 🔥 目標數量：普通模式1個，困難模式2個，地獄模式3個
+      let targetCount = 1;
+      if (hell) {
+        targetCount = 3;
+      } else if (hard) {
+        targetCount = 2;
+      }
+      
       // getUniqueRandomNumbers returns numbers starting from 1, but tile
       // indices are 0-based, so adjust the values here
       const targetIndices = getUniqueRandomNumbers(targetCount, tileCount).map(n => n - 1);
@@ -1125,7 +1500,7 @@
 
     function ensurePreload() {
       while (preloadQueue.length < MAX_PRELOAD_ROUNDS) {
-        preloadQueue.push(preloadRound(isHardMode));
+        preloadQueue.push(preloadRound(isHardMode, isHellMode));
       }
     }
 
@@ -1185,8 +1560,37 @@
       targetIndices = round.targetIndices;
       foundTargets = 0;
 
+      // 🎨 主題切換邏輯 - 讓整個畫面切換到對應的顏色主題
+      const body = document.body;
+      const currentTheme = targetType === 'muffin' ? 'theme-muffin' : 'theme-chihuahua';
+      
+      // 添加過渡效果
+      body.classList.add('theme-transition');
+      
+      // 移除舊主題
+      body.classList.remove('theme-muffin', 'theme-chihuahua');
+      
+      // 使用 requestAnimationFrame 確保平滑過渡
+      requestAnimationFrame(() => {
+        body.classList.add(currentTheme);
+        
+        // 播放主題切換音效
+        if (targetType === 'muffin') {
+          sound.themeMuffin();
+        } else {
+          sound.themeChihuahua();
+        }
+        
+        // 移除過渡類別，避免後續操作受影響
+        setTimeout(() => {
+          body.classList.remove('theme-transition');
+        }, 800);
+      });
+
+      const targetEmoji = targetType === 'muffin' ? '🧁' : '🐶';
+
       const targetNameEl = document.getElementById('target-name');
-      targetNameEl.textContent = targetType;
+      targetNameEl.textContent = `${targetEmoji} ${targetType}`;
       targetNameEl.className = `target-${targetType}`;
       const msgEl = document.getElementById('message');
       msgEl.textContent = '';
@@ -1194,28 +1598,48 @@
 
       // Update game hint
       const gameHint = document.getElementById('game-hint');
-      if (isHardMode) {
-        gameHint.textContent = `🔥 Hard Mode: Find all ${targetIndices.length} ${targetType}s!`;
+      if (isHellMode) {
+        gameHint.textContent = `💀 HELL MODE: Find all ${targetIndices.length} ${targetEmoji} ${targetType}s!`;
+        gameHint.style.color = 'var(--hell-mode-primary)';
+        gameHint.style.fontWeight = '700';
+        gameHint.style.textShadow = '0 2px 4px rgba(0,0,0,0.5)';
+      } else if (isHardMode) {
+        gameHint.textContent = `🔥 Hard Mode: Find all ${targetIndices.length} ${targetEmoji} ${targetType}s!`;
         gameHint.style.color = 'var(--hard-mode-primary)';
         gameHint.style.fontWeight = '600';
+        gameHint.style.textShadow = 'none';
       } else {
-        gameHint.textContent = `Click the right ${targetType} to keep playing`;
+        gameHint.textContent = `Click the right ${targetEmoji} ${targetType} to keep playing`;
         gameHint.style.color = 'var(--text-muted)';
         gameHint.style.fontWeight = '400';
+        gameHint.style.textShadow = 'none';
       }
 
-      // Show hard mode indicators only when in hard mode
+      // 🔥 顯示模式指示器
       const difficultyIndicator = document.getElementById('difficulty-indicator');
+      const hellIndicator = document.getElementById('hell-indicator');
       const hardModeProgress = document.getElementById('hard-mode-progress');
       const targetsNeeded = document.getElementById('targets-needed');
+      const hellTargetsNeeded = document.getElementById('hell-targets-needed');
       
-      if (isHardMode) {
+      if (isHellMode) {
+        // 地獄模式：隱藏困難模式UI，顯示地獄模式UI
+        difficultyIndicator.classList.add('hidden');
+        hellIndicator.classList.remove('hidden');
+        hardModeProgress.classList.remove('hidden');
+        hellTargetsNeeded.textContent = targetIndices.length;
+        updateHardModeProgress();
+      } else if (isHardMode) {
+        // 困難模式：顯示困難模式UI，隱藏地獄模式UI
         difficultyIndicator.classList.remove('hidden');
+        hellIndicator.classList.add('hidden');
         hardModeProgress.classList.remove('hidden');
         targetsNeeded.textContent = targetIndices.length;
         updateHardModeProgress();
       } else {
+        // 普通模式：隱藏所有特殊模式UI
         difficultyIndicator.classList.add('hidden');
+        hellIndicator.classList.add('hidden');
         hardModeProgress.classList.add('hidden');
       }
 
@@ -1366,6 +1790,37 @@
     }, 2000);
   }
 
+  // 🔥 地獄模式激活函數
+  function activateHellMode() {
+    isHellMode = true;
+    isHardMode = false; // 地獄模式覆蓋困難模式
+    document.body.classList.remove('hard-mode');
+    document.body.classList.add('hell-mode');
+    preloadQueue.length = 0;
+    ensurePreload();
+    
+    // 🔥 播放地獄模式音效
+    sound.hellMode();
+    
+    // Show hell mode activation message with dramatic effect
+    const msgEl = document.getElementById('message');
+    msgEl.textContent = '💀 HELL MODE UNLEASHED! Find 3 targets!';
+    msgEl.className = 'success';
+    msgEl.style.color = 'var(--hell-mode-primary)';
+    msgEl.style.fontWeight = '700';
+    msgEl.style.textShadow = '0 2px 8px rgba(183, 28, 28, 0.8)';
+    msgEl.style.animation = 'hell-pulse-glow 0.5s ease-in-out 3';
+    
+    setTimeout(() => {
+      msgEl.textContent = '';
+      msgEl.className = '';
+      msgEl.style.color = '';
+      msgEl.style.fontWeight = '';
+      msgEl.style.textShadow = '';
+      msgEl.style.animation = '';
+    }, 3000);
+  }
+
   function showReady(cb) {
       ensurePreload();
       readyEl.classList.remove("hidden");
@@ -1385,7 +1840,12 @@
       timeLeft = 30;
       score = 0;
       isHardMode = false;
-      document.body.classList.remove('hard-mode');
+      isHellMode = false; // 🔥 重置地獄模式
+      document.body.classList.remove('hard-mode', 'hell-mode');
+      
+      // 🎨 重置主題系統
+      document.body.classList.remove('theme-muffin', 'theme-chihuahua', 'theme-transition');
+      
       gameActive = true;
       updateHUD();
       preloadQueue.length = 0;
@@ -1395,10 +1855,12 @@
       summaryEl.classList.remove("show");
       summaryEl.classList.add("hidden");
       
-      // Hide hard mode UI when starting new game
+      // 🔥 隱藏所有特殊模式UI
       const difficultyIndicator = document.getElementById('difficulty-indicator');
+      const hellIndicator = document.getElementById('hell-indicator');
       const hardModeProgress = document.getElementById('hard-mode-progress');
       difficultyIndicator.classList.add('hidden');
+      hellIndicator.classList.add('hidden');
       hardModeProgress.classList.add('hidden');
       
       showReady(() => {
@@ -1473,9 +1935,14 @@
               tileEl.style.pointerEvents = '';
               // keep highlight in hard mode
             }
-            if (!isHardMode && score >= HARD_MODE_THRESHOLD) {
+            
+            // 🔥 模式升級邏輯
+            if (!isHellMode && score >= HELL_MODE_THRESHOLD) {
+              activateHellMode();
+            } else if (!isHardMode && !isHellMode && score >= HARD_MODE_THRESHOLD) {
               activateHardMode();
             }
+            
             if (gameActive) startRound();
           }, 600);
         } else {

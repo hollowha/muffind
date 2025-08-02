@@ -1192,22 +1192,32 @@
 
     /* 📱 手機端優化 - 防止UI過大與提升效能 */
     @media (max-width: 768px) {
+      body {
+        transition: none;
+      }
+
+      .tile,
+      .tile.loading {
+        animation: none !important;
+        transition: none;
+      }
+
       .container {
         padding: var(--space-md);
       }
-      
+
       h1 {
         font-size: clamp(1.2rem, 3.5vw, 1.6rem);
         padding: var(--space-sm) 0;
         margin-bottom: var(--space-md);
         transition: background 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;
       }
-      
+
       /* 減少動畫複雜度以提升效能 */
       .theme-transition {
-        transition: background 0.2s ease, 
-                    --primary 0.2s ease, 
-                    --card-bg 0.2s ease, 
+        transition: background 0.2s ease,
+                    --primary 0.2s ease,
+                    --card-bg 0.2s ease,
                     --card-border 0.2s ease;
       }
       

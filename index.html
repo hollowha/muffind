@@ -26,17 +26,68 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6244767628762401" crossorigin="anonymous"></script>
   <style>
     :root {
-
-      --bg-color: #fff8f2;
-      --card-bg: #fffaf5;
-      --primary: #ff6b3d;
-      --secondary: #734c39;
-      --muffin-color: #d16aff;
-      --chihuahua-color: #ff8c42;
-
-      --success: #28a745;
-      --error: #dc3545;
-      --shadow: rgba(0, 0, 0, 0.1);
+      /* 暖色系色彩系統 */
+      --bg-gradient: linear-gradient(135deg, #fff9f5 0%, #ffeee6 50%, #fff2e8 100%);
+      --card-bg: rgba(255, 248, 240, 0.95);
+      --card-border: rgba(255, 204, 153, 0.3);
+      
+      /* 主要色彩 - 暖橙色系 */
+      --primary: #ff6b35;
+      --primary-light: #ff8a65;
+      --primary-dark: #e64a19;
+      --primary-glow: rgba(255, 107, 53, 0.3);
+      
+      /* 語義色彩 - 暖色調 */
+      --secondary: #8d5524;
+      --secondary-light: #a1621f;
+      --text-primary: #3e2723;
+      --text-secondary: #5d4037;
+      --text-muted: #8d6e63;
+      
+      /* 功能色彩 - 暖色系 */
+      --muffin-color: #d84315;
+      --muffin-light: #ff5722;
+      --muffin-glow: rgba(216, 67, 21, 0.4);
+      --chihuahua-color: #ff8f00;
+      --chihuahua-light: #ffb74d;
+      --chihuahua-glow: rgba(255, 143, 0, 0.4);
+      
+      --success: #4caf50;
+      --success-light: #81c784;
+      --success-glow: rgba(76, 175, 80, 0.3);
+      --error: #f44336;
+      --error-light: #ef5350;
+      --error-glow: rgba(244, 67, 54, 0.3);
+      --warning: #ff9800;
+      --warning-glow: rgba(255, 152, 0, 0.3);
+      
+      /* 困難模式專用色彩 */
+      --hard-mode-primary: #bf360c;
+      --hard-mode-secondary: #ff3d00;
+      --hard-mode-bg: linear-gradient(135deg, #ffebee 0%, #ffcdd2 50%, #ffcdd2 100%);
+      --hard-mode-indicator: #ff1744;
+      --hard-mode-glow: rgba(191, 54, 12, 0.4);
+      
+      /* 陰影系統 - 暖色調 */
+      --shadow-sm: 0 1px 2px 0 rgba(139, 85, 36, 0.15);
+      --shadow-md: 0 4px 6px -1px rgba(139, 85, 36, 0.2), 0 2px 4px -1px rgba(139, 85, 36, 0.1);
+      --shadow-lg: 0 10px 15px -3px rgba(139, 85, 36, 0.25), 0 4px 6px -2px rgba(139, 85, 36, 0.15);
+      --shadow-xl: 0 20px 25px -5px rgba(139, 85, 36, 0.3), 0 10px 10px -5px rgba(139, 85, 36, 0.2);
+      --shadow-glow: 0 0 20px rgba(255, 107, 53, 0.3);
+      
+      /* 圓角系統 */
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      
+      /* 間距系統 */
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 24px;
+      --space-xl: 32px;
+      --space-2xl: 48px;
     }
 
     * {
@@ -46,173 +97,539 @@
     }
 
     body {
-      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: linear-gradient(135deg, #fff7f0, #ffe2cc);
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      background: var(--bg-gradient);
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--secondary);
-      filter: brightness(1);
-      transition: background 1.5s ease, filter 1.5s ease;
+      color: var(--text-primary);
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: var(--space-md);
+      position: relative;
+      overflow-x: hidden;
     }
 
+    /* 暖色系背景裝飾元素 */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: 
+        radial-gradient(circle at 25% 25%, rgba(255, 107, 53, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(255, 143, 0, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(216, 67, 21, 0.06) 0%, transparent 70%);
+      animation: float 25s ease-in-out infinite;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: rotate(0deg) translateY(0) scale(1); }
+      25% { transform: rotate(0.5deg) translateY(-8px) scale(1.02); }
+      50% { transform: rotate(-0.3deg) translateY(5px) scale(0.98); }
+      75% { transform: rotate(0.8deg) translateY(-12px) scale(1.01); }
+    }
+
+    /* 困難模式的視覺強化 */
     body.hard-mode {
-      background: linear-gradient(135deg, #ffe2cc, #ffb48a);
-      filter: brightness(0.85);
+      background: var(--hard-mode-bg);
+      animation: hardModeIntro 1s ease-out;
+    }
+
+    @keyframes hardModeIntro {
+      0% { 
+        background-color: rgba(255, 107, 53, 0.1);
+        transform: scale(1.02);
+      }
+      50% { 
+        background-color: rgba(191, 54, 12, 0.15);
+        transform: scale(0.98);
+      }
+      100% { 
+        background-color: transparent;
+        transform: scale(1);
+      }
+    }
+
+    body.hard-mode::before {
+      background: 
+        radial-gradient(circle at 25% 25%, rgba(191, 54, 12, 0.15) 0%, transparent 45%),
+        radial-gradient(circle at 75% 75%, rgba(255, 29, 68, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(244, 67, 54, 0.08) 0%, transparent 60%);
+      animation: float 20s ease-in-out infinite, hardModeGlow 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes hardModeGlow {
+      0% { opacity: 0.8; }
+      100% { opacity: 1; }
     }
 
     .container {
-      background-color: var(--card-bg);
-      box-shadow: 0 12px 32px var(--shadow);
-      border-radius: 16px;
-      border: 1px solid #ffd8b5;
-      padding: 48px 24px;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      box-shadow: var(--shadow-xl);
+      border-radius: var(--radius-xl);
+      border: 2px solid var(--card-border);
+      padding: var(--space-2xl) var(--space-xl);
       width: 100%;
-      max-width: 550px;
+      max-width: 600px;
       text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--primary-glow), var(--primary), var(--primary-glow), transparent);
+      opacity: 0.8;
+    }
+
+    /* 困難模式容器增強 */
+    body.hard-mode .container {
+      border-color: var(--hard-mode-indicator);
+      box-shadow: var(--shadow-xl), var(--hard-mode-glow);
+      animation: hardModeContainer 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes hardModeContainer {
+      0% { 
+        box-shadow: var(--shadow-xl), 0 0 15px var(--hard-mode-glow);
+      }
+      100% { 
+        box-shadow: var(--shadow-xl), 0 0 25px var(--hard-mode-glow);
+      }
+    }
+
+    body.hard-mode .container::before {
+      background: linear-gradient(90deg, transparent, var(--hard-mode-indicator), var(--hard-mode-primary), var(--hard-mode-indicator), transparent);
+      animation: hardModeBorder 1.5s ease-in-out infinite;
+    }
+
+    @keyframes hardModeBorder {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        margin: var(--space-md);
+        padding: var(--space-xl) var(--space-lg);
+        max-width: none;
+      }
     }
 
     h1 {
-      font-size: 1.8rem;
-      margin-bottom: 24px;
-      color: var(--secondary);
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 600;
+      margin-bottom: var(--space-lg);
+      color: var(--text-primary);
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+    }
+
+    /* 困難模式指示器 */
+    #difficulty-indicator {
+      margin-bottom: var(--space-lg);
+      animation: slideDown 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .difficulty-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-sm);
+      background: linear-gradient(135deg, var(--hard-mode-primary), var(--hard-mode-secondary));
+      color: white;
+      padding: var(--space-sm) var(--space-lg);
+      border-radius: var(--radius-xl);
+      font-weight: 600;
+      font-size: 0.9rem;
+      box-shadow: var(--shadow-lg), 0 0 15px var(--hard-mode-glow);
+      animation: pulse-glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulse-glow {
+      0% { 
+        box-shadow: var(--shadow-lg), 0 0 15px var(--hard-mode-glow);
+        transform: scale(1);
+      }
+      100% { 
+        box-shadow: var(--shadow-lg), 0 0 25px var(--hard-mode-glow);
+        transform: scale(1.02);
+      }
+    }
+
+    .fire-icon {
+      font-size: 1.1em;
+      animation: flicker 1.5s ease-in-out infinite;
+    }
+
+    @keyframes flicker {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
+    }
+
+    .target-count {
+      background: rgba(255, 255, 255, 0.2);
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+    }
+
+    /* 困難模式進度指示器 */
+    #hard-mode-progress {
+      margin-bottom: var(--space-lg);
+      text-align: center;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: rgba(191, 54, 12, 0.2);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      margin-bottom: var(--space-sm);
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--hard-mode-primary), var(--hard-mode-secondary));
+      border-radius: var(--radius-sm);
+      width: 0%;
+      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      animation: progress-shine 2s infinite;
+    }
+
+    @keyframes progress-shine {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+
+    .progress-text {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--hard-mode-primary);
+    }
+
+    @keyframes slideDown {
+      0% { 
+        opacity: 0; 
+        transform: translateY(-20px) scale(0.95); 
+      }
+      100% { 
+        opacity: 1; 
+        transform: translateY(0) scale(1); 
+      }
     }
 
     .target-muffin {
       color: var(--muffin-color);
+      background: linear-gradient(135deg, var(--muffin-color), var(--muffin-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .target-chihuahua {
       color: var(--chihuahua-color);
+      background: linear-gradient(135deg, var(--chihuahua-color), var(--chihuahua-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .prefix {
-      display: inline;
-      font-size: 0.5em;
+      font-size: 0.6em;
+      font-weight: 500;
+      color: var(--text-secondary);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
     }
 
     .grid {
       display: grid;
-      gap: 16px;
+      gap: var(--space-md);
       grid-template-columns: repeat(var(--cols, 5), 1fr);
+      margin: var(--space-lg) 0;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-      100% { transform: scale(1); }
-    }
-
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-4px); }
-      75% { transform: translateX(4px); }
-    }
-
-
-    @media (max-width: 600px) {
+    @media (max-width: 640px) {
       .grid {
         grid-template-columns: repeat(var(--cols, 3), 1fr);
+        gap: var(--space-sm);
       }
     }
 
     .tile {
-      background-color: var(--bg-color);
-      border-radius: 12px;
+      background: rgba(255, 248, 240, 0.9);
+      border-radius: var(--radius-md);
       overflow: hidden;
       cursor: pointer;
       background-size: cover;
       background-position: center;
       aspect-ratio: 1 / 1;
-      animation: fadeIn 0.3s ease;
-      transition: transform 0.2s, box-shadow 0.2s;
-      border: 1px solid #ffd8b5;
-      box-shadow: 0 4px 8px var(--shadow);
+      animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 3px solid transparent;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      backdrop-filter: blur(10px);
+    }
+
+    .tile::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, 
+        rgba(255, 107, 53, 0.1) 0%, 
+        rgba(255, 143, 0, 0.05) 50%, 
+        transparent 100%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
 
     .tile:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 16px var(--shadow);
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: var(--shadow-lg), var(--shadow-glow);
+      border-color: var(--primary-glow);
+    }
+
+    .tile:hover::before {
+      opacity: 1;
+    }
+
+    .tile:active {
+      transform: translateY(-3px) scale(0.97);
+      transition: all 0.1s ease;
+    }
+
+    /* 困難模式瓦片增強 */
+    body.hard-mode .tile {
+      border-width: 4px;
+    }
+
+    body.hard-mode .tile:hover {
+      box-shadow: var(--shadow-lg), 0 0 20px var(--hard-mode-glow);
+      border-color: var(--hard-mode-indicator);
+    }
+
+    .tile.loading {
+      background: linear-gradient(
+        90deg,
+        rgba(255, 248, 240, 0.9) 25%,
+        rgba(255, 204, 153, 0.6) 50%,
+        rgba(255, 248, 240, 0.9) 75%
+      );
+      background-size: 200% 100%;
+      animation: loading-shimmer 1.5s ease-in-out infinite, fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .tile.correct {
-      animation: pulse 0.4s;
-      outline: 4px solid var(--success);
+      animation: correctPulse 0.6s ease;
+      border-color: var(--success);
+      box-shadow: var(--shadow-lg), 0 0 0 6px var(--success-glow), var(--success-glow);
+    }
+
+    @keyframes correctPulse {
+      0% { transform: scale(1); }
+      30% { transform: scale(1.1); }
+      60% { transform: scale(0.95); }
+      100% { transform: scale(1); }
     }
 
     .tile.wrong {
-      animation: shake 0.4s;
+      animation: wrongShake 0.5s ease;
+      border-color: var(--error);
+      box-shadow: var(--shadow-lg), 0 0 0 6px var(--error-glow), var(--error-glow);
+    }
+
+    @keyframes wrongShake {
+      0%, 100% { transform: translateX(0) rotate(0deg); }
+      20% { transform: translateX(-8px) rotate(-2deg); }
+      40% { transform: translateX(8px) rotate(2deg); }
+      60% { transform: translateX(-6px) rotate(-1deg); }
+      80% { transform: translateX(4px) rotate(1deg); }
     }
 
     .tile.found {
       pointer-events: none;
+      opacity: 0.8;
     }
 
+    /* 困難模式中已找到的瓦片增強視覺效果 */
     body.hard-mode .tile.found {
-      outline: 4px solid var(--success);
+      border-color: var(--success);
+      box-shadow: var(--shadow-md), 0 0 0 4px var(--success-glow), 0 0 15px var(--success-glow);
+      animation: foundGlow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes foundGlow {
+      0% { 
+        box-shadow: var(--shadow-md), 0 0 0 4px var(--success-glow), 0 0 15px var(--success-glow);
+      }
+      100% { 
+        box-shadow: var(--shadow-md), 0 0 0 6px var(--success-glow), 0 0 25px var(--success-glow);
+      }
     }
 
     #message {
-      margin-top: 24px;
-      font-size: 1.2rem;
-      min-height: 1.2em;
+      margin: var(--space-lg) 0;
+      font-size: 1.1rem;
+      font-weight: 500;
+      min-height: 1.5em;
+      transition: all 0.3s ease;
+      letter-spacing: -0.01em;
     }
 
     #message.success {
       color: var(--success);
+      text-shadow: 0 1px 2px rgba(16, 185, 129, 0.1);
     }
 
     #message.error {
       color: var(--error);
+      text-shadow: 0 1px 2px rgba(239, 68, 68, 0.1);
     }
 
     #footer {
-      margin-top: 16px;
-      font-size: 0.9rem;
-      color: var(--secondary);
-      opacity: 0.8;
+      margin-top: var(--space-lg);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      position: relative;
+    }
+
+    #loading-indicator {
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.8rem;
+      color: var(--primary);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      background: rgba(99, 102, 241, 0.1);
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: var(--radius-sm);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+    }
+
+    #loading-indicator.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-4px);
     }
 
     #links {
-      margin-top: 8px;
+      margin-top: var(--space-md);
       font-size: 0.8rem;
-      color: var(--secondary);
-      opacity: 0.8;
+      color: var(--text-muted);
     }
 
     #links a {
-      color: var(--secondary);
+      color: var(--text-secondary);
       text-decoration: none;
-      margin: 0 4px;
+      margin: 0 var(--space-xs);
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: var(--radius-sm);
+      transition: all 0.2s ease;
     }
 
     #links a:hover {
-      text-decoration: underline;
+      color: var(--primary);
+      background: rgba(99, 102, 241, 0.1);
     }
 
     #hud {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 16px;
-      font-weight: bold;
+      align-items: center;
+      margin-bottom: var(--space-xl);
+      font-weight: 600;
+      padding: var(--space-lg);
+      background: rgba(255, 248, 240, 0.8);
+      border-radius: var(--radius-lg);
+      border: 2px solid rgba(255, 204, 153, 0.4);
+      backdrop-filter: blur(15px);
+      box-shadow: var(--shadow-md);
+      transition: all 0.3s ease;
+    }
+
+    /* 困難模式 HUD 增強 */
+    body.hard-mode #hud {
+      background: rgba(255, 245, 238, 0.9);
+      border-color: var(--hard-mode-indicator);
+      box-shadow: var(--shadow-lg), 0 0 10px var(--hard-mode-glow);
     }
 
     #timer {
-      font-size: 1.6rem;
+      font-size: 1.5rem;
       color: var(--primary);
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      text-shadow: 0 1px 3px rgba(255, 107, 53, 0.3);
+    }
+
+    /* 時間緊迫時的警告效果 */
+    #timer.warning {
+      color: var(--warning);
+      animation: timeWarning 1s ease-in-out infinite;
+    }
+
+    #timer.critical {
+      color: var(--error);
+      animation: timeCritical 0.5s ease-in-out infinite;
+    }
+
+    @keyframes timeWarning {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    @keyframes timeCritical {
+      0%, 100% { 
+        transform: scale(1); 
+        text-shadow: 0 1px 3px rgba(244, 67, 54, 0.3);
+      }
+      50% { 
+        transform: scale(1.1); 
+        text-shadow: 0 2px 8px rgba(244, 67, 54, 0.6);
+      }
     }
 
     #time-display {
       position: relative;
-      background-color: rgba(255, 107, 61, 0.1);
-      padding: 2px 6px;
-      border-radius: 6px;
+      background: linear-gradient(135deg, rgba(255, 107, 53, 0.15), rgba(255, 107, 53, 0.08));
+      padding: var(--space-md) var(--space-lg);
+      border-radius: var(--radius-md);
+      border: 2px solid rgba(255, 107, 53, 0.3);
+      backdrop-filter: blur(15px);
+    }
+
+    body.hard-mode #time-display {
+      background: linear-gradient(135deg, rgba(191, 54, 12, 0.2), rgba(191, 54, 12, 0.1));
+      border-color: var(--hard-mode-indicator);
     }
 
     #time-change {
@@ -220,59 +637,91 @@
       left: 50%;
       top: 0;
       transform: translate(-50%, -50%);
-      font-size: 0.8rem;
+      font-size: 0.75rem;
+      font-weight: 600;
       opacity: 0;
-      transition: opacity 0.3s, transform 0.3s;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       pointer-events: none;
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: var(--radius-sm);
+      backdrop-filter: blur(10px);
     }
 
     #time-change.show {
       opacity: 1;
-      transform: translate(-50%, -150%);
+      transform: translate(-50%, -200%);
     }
 
-    #summary {
+    #summary, #intro, #about, #contact {
       position: fixed;
       inset: 0;
-      background: rgba(255, 248, 242, 0.95);
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      font-size: 1.5rem;
-      color: var(--secondary);
+      gap: var(--space-lg);
+      font-size: 1.3rem;
+      color: var(--text-primary);
       cursor: pointer;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.3s;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      text-align: center;
+      padding: var(--space-xl);
     }
 
-    #summary.hidden {
+    #summary h2, #intro h2, #about h2, #contact h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: var(--space-lg);
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    #summary p, #intro p, #about p, #contact p {
+      color: var(--text-secondary);
+      line-height: 1.6;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    #summary.hidden, #intro.hidden, #about.hidden, #contact.hidden {
       display: none;
     }
 
-    #summary.show {
+    #summary.show, #intro.show, #about.show, #contact.show {
       opacity: 1;
       pointer-events: auto;
     }
-    #summary.no-click {
+
+    #summary.no-click, #intro.no-click {
       pointer-events: none;
     }
 
     #ready {
       position: fixed;
       inset: 0;
-      background: rgba(255, 248, 242, 0.9);
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2rem;
+      font-size: 2.5rem;
+      font-weight: 700;
       color: var(--primary);
       opacity: 0;
       pointer-events: none;
       transform: scale(0.9);
-      transition: opacity 0.3s, transform 0.3s;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     #ready.hidden {
@@ -284,99 +733,246 @@
       transform: scale(1);
     }
 
-    #intro {
-      position: fixed;
-      inset: 0;
-      background: rgba(255, 248, 242, 0.95);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      font-size: 1.5rem;
-      color: var(--secondary);
-      cursor: pointer;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s;
+    /* 模態框內容 */
+    .modal-content {
+      max-width: 500px;
+      padding: var(--space-xl);
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(20px);
+      box-shadow: var(--shadow-xl);
+      animation: bounce-in 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    #intro.hidden {
-      display: none;
+    /* 響應式設計優化 */
+    @media (max-width: 480px) {
+      .container {
+        padding: var(--space-lg);
+      }
+      
+      .modal-content {
+        padding: var(--space-lg);
+        margin: var(--space-md);
+      }
+      
+      h1 {
+        font-size: 1.3rem;
+      }
+      
+      #hud {
+        flex-direction: column;
+        gap: var(--space-sm);
+        text-align: center;
+      }
+      
+      #summary h2, #intro h2, #about h2, #contact h2 {
+        font-size: 1.5rem;
+      }
     }
 
-    #intro.show {
-      opacity: 1;
-      pointer-events: auto;
+    /* 高對比度和無障礙優化 */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
     }
 
-    #intro.no-click {
-      pointer-events: none;
+    @media (prefers-contrast: high) {
+      .tile {
+        border-width: 3px;
+      }
+      
+      .tile.correct {
+        border-width: 4px;
+      }
+      
+      .tile.wrong {
+        border-width: 4px;
+      }
     }
 
-    #about, #contact {
-      position: fixed;
-      inset: 0;
-      background: rgba(255, 248, 242, 0.95);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      font-size: 1.2rem;
-      color: var(--secondary);
-      cursor: pointer;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s;
-      text-align: center;
-      padding: 0 20px;
+    /* Focus 樣式 */
+    .tile:focus,
+    #links a:focus {
+      outline: 3px solid var(--primary);
+      outline-offset: 3px;
     }
 
-    #about.hidden, #contact.hidden {
-      display: none;
+    /* 通用隱藏類 */
+    .hidden {
+      display: none !important;
     }
 
-    #about.show, #contact.show {
-      opacity: 1;
-      pointer-events: auto;
+    /* 動畫關鍵幀 */
+    @keyframes fadeIn {
+      from { 
+        opacity: 0; 
+        transform: scale(0.9) translateY(15px); 
+      }
+      to { 
+        opacity: 1; 
+        transform: scale(1) translateY(0); 
+      }
+    }
+
+    @keyframes loading-shimmer {
+      0% { 
+        background-position: -200% 0; 
+      }
+      100% { 
+        background-position: 200% 0; 
+      }
+    }
+
+    @keyframes bounce-in {
+      0% { 
+        transform: scale(0.2) rotate(-10deg); 
+        opacity: 0; 
+      }
+      50% { 
+        transform: scale(1.15) rotate(5deg); 
+        opacity: 0.8;
+      }
+      100% { 
+        transform: scale(1) rotate(0deg); 
+        opacity: 1; 
+      }
+    }
+
+    /* 刺激的粒子效果 */
+    @keyframes particleExplosion {
+      0% { 
+        transform: scale(0) rotate(0deg); 
+        opacity: 1; 
+      }
+      50% { 
+        transform: scale(1.5) rotate(180deg); 
+        opacity: 0.7; 
+      }
+      100% { 
+        transform: scale(2) rotate(360deg); 
+        opacity: 0; 
+      }
+    }
+
+    /* 困難模式激活動畫 */
+    @keyframes hardModeActivation {
+      0% { 
+        background-color: rgba(255, 107, 53, 0.1);
+        transform: scale(1);
+      }
+      25% { 
+        background-color: rgba(191, 54, 12, 0.2);
+        transform: scale(1.02);
+      }
+      50% { 
+        background-color: rgba(255, 29, 68, 0.15);
+        transform: scale(0.98);
+      }
+      75% { 
+        background-color: rgba(244, 67, 54, 0.1);
+        transform: scale(1.01);
+      }
+      100% { 
+        background-color: transparent;
+        transform: scale(1);
+      }
     }
   </style>
 </head>
 <body>
   <main class="container">
-    <h1 id="mode"><span class="prefix">Find the&nbsp;</span><span id="target-name">Loading...</span></h1>
-    <div id="hud">
-      <span id="time-display">Time: <span id="timer">30</span>s
-        <span id="time-change"></span>
-      </span>
-      <span>Score: <span id="score">0</span></span>
-    </div>
-    <div id="game" class="grid"></div>
-    <p id="message"></p>
-    <div id="footer">Click the correct image to continue</div>
-    <div id="links"><a href="?about">About Us</a> | <a href="?contact">Contact Us</a></div>
+    <header>
+      <h1 id="mode">
+        <span class="prefix">Find the&nbsp;</span>
+        <span id="target-name">Loading...</span>
+      </h1>
+      
+      <!-- Hard Mode Indicator -->
+      <div id="difficulty-indicator" class="hidden">
+        <div class="difficulty-badge">
+          <span class="fire-icon">🔥</span>
+          <span>Hard Mode</span>
+          <span class="target-count">Find <span id="targets-needed">2</span>!</span>
+        </div>
+      </div>
+      
+      <div id="hud">
+        <div id="time-display">
+          <span style="font-size: 0.9rem; opacity: 0.8;">Time:</span>
+          <span id="timer">30</span>s
+          <span id="time-change"></span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 0.9rem; opacity: 0.8;">Score:</span>
+          <span id="score" style="font-size: 1.4rem; font-weight: 700; color: var(--primary);">0</span>
+        </div>
+      </div>
+      
+      <!-- Hard Mode Progress Indicator -->
+      <div id="hard-mode-progress" class="hidden">
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+        <span class="progress-text">Found <span id="found-count">0</span> / <span id="total-targets">2</span></span>
+      </div>
+    </header>
+
+    <section id="game" class="grid" aria-label="Game board"></section>
+    
+    <div id="message" role="status" aria-live="polite"></div>
+    
+    <footer id="footer">
+      <div id="loading-indicator">🎨 Loading images...</div>
+      <p id="game-hint">Click the right picture to keep playing</p>
+    </footer>
+    
+    <nav id="links">
+      <a href="?about">About Us</a> | 
+      <a href="?contact">Contact Us</a>
+    </nav>
   </main>
   <div id="summary" class="hidden">
-    <h2>Time's up!</h2>
-    <p>Your score: <span id="final-score"></span></p>
-    <p>Tap anywhere to play again</p>
+    <div class="modal-content">
+      <h2>🎉 Time is up!</h2>
+      <p>Your score: <strong id="final-score" style="color: var(--primary); font-size: 1.5em;"></strong></p>
+      <p style="margin-top: var(--space-md); opacity: 0.8;">Click anywhere to play again</p>
+    </div>
   </div>
+  
   <div id="ready" class="hidden"></div>
+  
   <div id="intro" class="show no-click">
-    <h2>Welcome to the fluffiest challenge! 🧁🐶</h2>
-    <p>Can you guess whether each picture hides a delicious muffin or an adorable chihuahua?</p>
-    <p>Tap anywhere to begin 👆</p>
+    <div class="modal-content">
+      <h2>Welcome to the cutest game ever! 🧁🐶</h2>
+      <p>Can you tell if each picture has a yummy muffin or a cute chihuahua?</p>
+      <p style="margin-top: var(--space-lg); font-size: 1rem; opacity: 0.8;">
+        👆 Click anywhere to start playing
+      </p>
+    </div>
   </div>
+  
   <div id="about" class="hidden">
-    <h2>About Us</h2>
-    <p>We are a small game development team from Taiwan made up of passionate university students.</p>
-    <p>Click anywhere to return to the game.</p>
+    <div class="modal-content">
+      <h2>About Us</h2>
+      <p>We are a small game team from Taiwan. We are students who love making fun games.</p>
+      <p style="margin-top: var(--space-md); font-size: 0.9rem; opacity: 0.7;">
+        Click anywhere to go back to the game
+      </p>
+    </div>
   </div>
+  
   <div id="contact" class="hidden">
-    <h2>Contact Us</h2>
-    <p>Feel free to email us at <a href="mailto:catfish1105@gmail.com">catfish1105@gmail.com</a>.</p>
-    <p>Click anywhere to return to the game.</p>
+    <div class="modal-content">
+      <h2>Contact Us</h2>
+      <p>Send us a message at <a href="mailto:catfish1105@gmail.com" style="color: var(--primary); text-decoration: underline;">catfish1105@gmail.com</a></p>
+      <p style="margin-top: var(--space-md); font-size: 0.9rem; opacity: 0.7;">
+        Click anywhere to go back to the game
+      </p>
+    </div>
   </div>
 
   <script>
@@ -388,7 +984,10 @@
     const HARD_MODE_THRESHOLD = 10;
     const MEDIUM_MODE_THRESHOLD = 2;
     const preloadQueue = [];
-    const MAX_PRELOAD_ROUNDS = 10;
+    const MAX_PRELOAD_ROUNDS = 15; // 增加預載入回合數
+    const imageCache = new Map(); // 圖片快取
+    const loadingPromises = new Map(); // 載入中的Promise追蹤
+    const MAX_CACHE_SIZE = 200; // 最大快取圖片數量，避免記憶體問題
 
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     const audioCtx = new AudioContext();
@@ -435,6 +1034,51 @@
     const contactEl = document.getElementById("contact");
     const readyEl = document.getElementById("ready");
 
+    // 記憶體管理：清理舊的快取
+    function cleanupCache() {
+      if (imageCache.size > MAX_CACHE_SIZE) {
+        const keys = Array.from(imageCache.keys());
+        const keysToDelete = keys.slice(0, keys.length - MAX_CACHE_SIZE);
+        keysToDelete.forEach(key => imageCache.delete(key));
+      }
+    }
+
+    // 圖片載入函數，返回Promise
+    function loadImage(src) {
+      // 如果已經載入過，直接返回
+      if (imageCache.has(src)) {
+        return Promise.resolve(imageCache.get(src));
+      }
+      
+      // 如果正在載入中，返回現有的Promise
+      if (loadingPromises.has(src)) {
+        return loadingPromises.get(src);
+      }
+
+      const promise = new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => {
+          cleanupCache(); // 在添加新圖片前清理快取
+          imageCache.set(src, img);
+          loadingPromises.delete(src);
+          resolve(img);
+        };
+        img.onerror = () => {
+          loadingPromises.delete(src);
+          reject(new Error(`Failed to load image: ${src}`));
+        };
+        img.src = src;
+      });
+
+      loadingPromises.set(src, promise);
+      return promise;
+    }
+
+    // 批次載入圖片
+    function loadImagesAsync(paths) {
+      return Promise.all(paths.map(path => loadImage(path)));
+    }
+
     function preloadRound(hard = false) {
       const tileCount = getTileCount();
       const roundTargetType = Math.random() < 0.5 ? 'chihuahua' : 'muffin';
@@ -448,6 +1092,8 @@
       const targetNums = getUniqueRandomNumbers(targetCount, IMAGE_COUNTS[roundTargetType]);
 
       const tiles = [];
+      const imagePaths = [];
+      
       for (let i = 0; i < tileCount; i++) {
         let type, num;
         const tIndex = targetIndices.indexOf(i);
@@ -460,18 +1106,21 @@
         }
         const padded = String(num).padStart(digits, '0');
         const path = `${type}/${type}_${padded}.jpg`;
-        const img = new Image();
-        img.src = path; // preload
         tiles.push({ path });
+        imagePaths.push(path);
       }
 
-      return {
+      // 返回包含載入Promise的回合物件
+      const round = {
         tileCount,
         targetType: roundTargetType,
         otherType: roundOtherType,
         targetIndices,
-        tiles
+        tiles,
+        loadPromise: loadImagesAsync(imagePaths) // 添加載入Promise
       };
+
+      return round;
     }
 
     function ensurePreload() {
@@ -493,8 +1142,33 @@
     }
 
     function updateHUD() {
-      document.getElementById('timer').textContent = timeLeft;
+      const timerEl = document.getElementById('timer');
+      timerEl.textContent = timeLeft;
+      
+      // 時間警告效果
+      timerEl.classList.remove('warning', 'critical');
+      if (timeLeft <= 10 && timeLeft > 5) {
+        timerEl.classList.add('warning');
+      } else if (timeLeft <= 5) {
+        timerEl.classList.add('critical');
+      }
+      
       document.getElementById('score').textContent = score;
+    }
+
+    function updateHardModeProgress() {
+      if (!isHardMode) return;
+      
+      const foundCountEl = document.getElementById('found-count');
+      const totalTargetsEl = document.getElementById('total-targets');
+      const progressFill = document.querySelector('.progress-fill');
+      
+      const totalTargets = targetIndices.length;
+      foundCountEl.textContent = foundTargets;
+      totalTargetsEl.textContent = totalTargets;
+      
+      const progress = (foundTargets / totalTargets) * 100;
+      progressFill.style.width = `${progress}%`;
     }
 
     function showTimeChange(delta) {
@@ -518,6 +1192,33 @@
       msgEl.textContent = '';
       msgEl.className = '';
 
+      // Update game hint
+      const gameHint = document.getElementById('game-hint');
+      if (isHardMode) {
+        gameHint.textContent = `🔥 Hard Mode: Find all ${targetIndices.length} ${targetType}s!`;
+        gameHint.style.color = 'var(--hard-mode-primary)';
+        gameHint.style.fontWeight = '600';
+      } else {
+        gameHint.textContent = `Click the right ${targetType} to keep playing`;
+        gameHint.style.color = 'var(--text-muted)';
+        gameHint.style.fontWeight = '400';
+      }
+
+      // Show hard mode indicators only when in hard mode
+      const difficultyIndicator = document.getElementById('difficulty-indicator');
+      const hardModeProgress = document.getElementById('hard-mode-progress');
+      const targetsNeeded = document.getElementById('targets-needed');
+      
+      if (isHardMode) {
+        difficultyIndicator.classList.remove('hidden');
+        hardModeProgress.classList.remove('hidden');
+        targetsNeeded.textContent = targetIndices.length;
+        updateHardModeProgress();
+      } else {
+        difficultyIndicator.classList.add('hidden');
+        hardModeProgress.classList.add('hidden');
+      }
+
       const gameDiv = document.getElementById('game');
       gameDiv.innerHTML = '';
       const cols = round.tileCount === 6
@@ -525,25 +1226,93 @@
         : (window.innerWidth <= 600 ? 3 : 5);
       gameDiv.style.setProperty('--cols', cols);
 
+      const loadingIndicator = document.getElementById('loading-indicator');
+      let hasLoadingImages = false;
+
       for (let i = 0; i < round.tileCount; i++) {
         const tile = document.createElement('div');
         tile.className = 'tile';
-        tile.style.backgroundImage = `url(${round.tiles[i].path})`;
+        tile.setAttribute('tabindex', '0'); // 鍵盤可訪問性
+        
+        // 檢查圖片是否已在快取中
+        const cachedImg = imageCache.get(round.tiles[i].path);
+        if (cachedImg) {
+          tile.style.backgroundImage = `url(${round.tiles[i].path})`;
+        } else {
+          // 如果圖片還沒載入，顯示載入中狀態
+          tile.classList.add('loading');
+          hasLoadingImages = true;
+        }
+        
         tile.addEventListener('click', () => handleClick(i, tile));
+        tile.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleClick(i, tile);
+          }
+        });
         gameDiv.appendChild(tile);
       }
+
+      // 顯示載入指示器
+      if (hasLoadingImages) {
+        loadingIndicator.classList.add('show');
+      }
+
+      // 當所有圖片載入完成後，更新瓦片背景
+      round.loadPromise.then(() => {
+        const tiles = gameDiv.querySelectorAll('.tile');
+        tiles.forEach((tile, i) => {
+          tile.style.backgroundImage = `url(${round.tiles[i].path})`;
+          tile.classList.remove('loading');
+        });
+        loadingIndicator.classList.remove('show');
+      }).catch(error => {
+        console.error('Error loading images:', error);
+        // 即使有錯誤也嘗試顯示圖片
+        const tiles = gameDiv.querySelectorAll('.tile');
+        tiles.forEach((tile, i) => {
+          tile.style.backgroundImage = `url(${round.tiles[i].path})`;
+          tile.classList.remove('loading');
+        });
+        loadingIndicator.classList.remove('show');
+      });
     }
 
   function startRound() {
     if (!gameActive) return;
     ensurePreload();
     const round = preloadQueue.shift();
+    if (!round) return; // 安全檢查
+    
     renderRound(round);
     ensurePreload();
   }
 
+  // 積極預載入下幾回合的圖片
+  function aggressivePreload() {
+    // 額外預載入一些常用圖片
+    const commonImages = [];
+    const types = ['muffin', 'chihuahua'];
+    
+    // 為每種類型預載入一些隨機圖片
+    types.forEach(type => {
+      const randomNums = getUniqueRandomNumbers(5, IMAGE_COUNTS[type]);
+      randomNums.forEach(num => {
+        const padded = String(num).padStart(digits, '0');
+        commonImages.push(`${type}/${type}_${padded}.jpg`);
+      });
+    });
+    
+    // 開始預載入但不等待完成
+    loadImagesAsync(commonImages).catch(error => {
+      console.log('Background preload completed with some errors:', error);
+    });
+  }
+
   function showIntro() {
     ensurePreload();
+    aggressivePreload(); // 在介紹畫面時開始積極預載入
     introClickable = false;
     introEl.classList.remove("hidden");
     introEl.classList.add("no-click");
@@ -586,6 +1355,15 @@
     document.body.classList.add('hard-mode');
     preloadQueue.length = 0;
     ensurePreload();
+    
+    // Show hard mode activation message
+    const msgEl = document.getElementById('message');
+    msgEl.textContent = '🔥 Hard Mode ON! Find all targets!';
+    msgEl.className = 'success';
+    setTimeout(() => {
+      msgEl.textContent = '';
+      msgEl.className = '';
+    }, 2000);
   }
 
   function showReady(cb) {
@@ -616,6 +1394,13 @@
       summaryEl.classList.remove("no-click");
       summaryEl.classList.remove("show");
       summaryEl.classList.add("hidden");
+      
+      // Hide hard mode UI when starting new game
+      const difficultyIndicator = document.getElementById('difficulty-indicator');
+      const hardModeProgress = document.getElementById('hard-mode-progress');
+      difficultyIndicator.classList.add('hidden');
+      hardModeProgress.classList.add('hidden');
+      
       showReady(() => {
         sound.start();
         startRound();
@@ -651,12 +1436,18 @@
       const msgEl = document.getElementById('message');
       if (targetIndices.includes(index) && !tileEl.classList.contains('found')) {
         sound.correct();
-        tileEl.classList.add('correct');
+        tileEl.classList.add('correct', 'correct-pulse');
         tileEl.classList.add('found');
         if (isHardMode) {
           tileEl.style.pointerEvents = 'none';
         }
         foundTargets++;
+        
+        // Update hard mode progress
+        if (isHardMode) {
+          updateHardModeProgress();
+        }
+        
         if (foundTargets === targetIndices.length) {
           score++;
           if (score === MEDIUM_MODE_THRESHOLD) {
@@ -665,12 +1456,18 @@
           }
           timeLeft += 2;
           updateHUD();
-          msgEl.textContent = '🎉 Correct! +2s';
+          
+          if (isHardMode) {
+            msgEl.textContent = `🎉 Great! Found all ${foundTargets} targets! +2s`;
+          } else {
+            msgEl.textContent = '🎉 Correct! +2s';
+          }
           msgEl.className = 'success';
           showTimeChange(2);
+          
           setTimeout(() => {
             if (!isHardMode) {
-              tileEl.classList.remove('correct');
+              tileEl.classList.remove('correct', 'correct-pulse');
               tileEl.classList.remove('found');
             } else {
               tileEl.style.pointerEvents = '';
@@ -682,11 +1479,16 @@
             if (gameActive) startRound();
           }, 600);
         } else {
-          msgEl.textContent = '✔️ One more!';
+          if (isHardMode) {
+            const remaining = targetIndices.length - foundTargets;
+            msgEl.textContent = `✨ Good! Need ${remaining} more`;
+          } else {
+            msgEl.textContent = '✔️ One more!';
+          }
           msgEl.className = 'success';
           setTimeout(() => {
             if (!isHardMode) {
-              tileEl.classList.remove('correct');
+              tileEl.classList.remove('correct', 'correct-pulse');
               tileEl.classList.remove('found');
             }
           }, 600);
@@ -695,12 +1497,19 @@
         sound.wrong();
         timeLeft = Math.max(0, timeLeft - 2);
         updateHUD();
-        msgEl.textContent = '❌ Wrong! -2s';
+        
+        if (isHardMode) {
+          const remaining = targetIndices.length - foundTargets;
+          msgEl.textContent = `❌ Wrong! Hint: Need ${remaining} more ${targetType}s -2s`;
+        } else {
+          msgEl.textContent = '❌ Wrong! -2s';
+        }
         msgEl.className = 'error';
         showTimeChange(-2);
-        tileEl.classList.add('wrong');
+        tileEl.classList.add('wrong', 'error-shake');
+        
         setTimeout(() => {
-          tileEl.classList.remove('wrong');
+          tileEl.classList.remove('wrong', 'error-shake');
           msgEl.textContent = '';
           msgEl.className = '';
         }, 500);
@@ -736,6 +1545,12 @@
       } else {
         showIntro();
       }
+      
+      // Ensure hard mode UI is hidden on page load
+      const difficultyIndicator = document.getElementById('difficulty-indicator');
+      const hardModeProgress = document.getElementById('hard-mode-progress');
+      difficultyIndicator.classList.add('hidden');
+      hardModeProgress.classList.add('hidden');
     }
 
     window.onload = checkPage;

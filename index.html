@@ -563,12 +563,6 @@
       border: 2px solid rgba(255, 143, 0, 0.2);
     }
 
-    /* 困難模式指示器 */
-    #difficulty-indicator {
-      margin: 0;
-      animation: slideDown 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
     .difficulty-badge {
       display: inline-flex;
       align-items: center;
@@ -1604,21 +1598,17 @@
           <span id="time-change"></span>
         </div>
 
-        <!-- Hard Mode Indicator -->
-        <div id="difficulty-indicator" class="hidden">
-          <div class="difficulty-badge">
+        <!-- Hard Mode Status -->
+        <div id="hard-mode-progress" class="hidden">
+          <div id="hard-mode-badge" class="difficulty-badge">
             <span class="fire-icon">🔥</span>
             <span>Hard Mode</span>
-            <span class="target-count">Find <span id="targets-needed">2</span>!</span>
+            <span class="target-count" id="hard-mode-count">0/2</span>
           </div>
-        </div>
-        
-        <!-- Hard Mode Progress Indicator - In HUD -->
-        <div id="hard-mode-progress" class="hidden">
           <div class="progress-bar">
             <div class="progress-fill"></div>
           </div>
-          <span class="progress-text">Found <span id="found-count">0</span> / <span id="total-targets">2</span></span>
+          <span class="progress-text hidden" id="progress-text">Found 0 / 2</span>
         </div>
         
         <div style="display: flex; align-items: center; gap: 8px;">
@@ -2147,18 +2137,22 @@
     }
 
     function updateHardModeProgress() {
-      if (!isHardMode) return;
-      
-      const foundCountEl = document.getElementById('found-count');
-      const totalTargetsEl = document.getElementById('total-targets');
+      if (!isHardMode && !isHellMode) return;
+
+      const hardModeCount = document.getElementById('hard-mode-count');
+      const progressText = document.getElementById('progress-text');
       const progressFill = document.querySelector('.progress-fill');
-      
+
       const totalTargets = targetIndices.length;
-      foundCountEl.textContent = foundTargets;
-      totalTargetsEl.textContent = totalTargets;
-      
       const progress = (foundTargets / totalTargets) * 100;
       progressFill.style.width = `${progress}%`;
+
+      if (hardModeCount) {
+        hardModeCount.textContent = `${foundTargets}/${totalTargets}`;
+      }
+      if (progressText) {
+        progressText.textContent = `Found ${foundTargets} / ${totalTargets}`;
+      }
     }
 
     function showTimeChange(delta) {
@@ -2243,31 +2237,33 @@
       }
 
       // 🔥 顯示模式指示器
-      const difficultyIndicator = document.getElementById('difficulty-indicator');
       const hellIndicator = document.getElementById('hell-indicator');
       const hardModeProgress = document.getElementById('hard-mode-progress');
-      const targetsNeeded = document.getElementById('targets-needed');
+      const hardModeBadge = document.getElementById('hard-mode-badge');
+      const progressText = document.getElementById('progress-text');
       const hellTargetsNeeded = document.getElementById('hell-targets-needed');
-      
+
       if (isHellMode) {
-        // 地獄模式：隱藏困難模式UI，顯示地獄模式UI
-        difficultyIndicator.classList.add('hidden');
+        // 地獄模式：顯示地獄指示器與進度條
         hellIndicator.classList.remove('hidden');
         hardModeProgress.classList.remove('hidden');
+        hardModeBadge.classList.add('hidden');
+        progressText.classList.remove('hidden');
         hellTargetsNeeded.textContent = targetIndices.length;
         updateHardModeProgress();
       } else if (isHardMode) {
-        // 困難模式：顯示困難模式UI，隱藏地獄模式UI
-        difficultyIndicator.classList.remove('hidden');
+        // 困難模式：顯示合併後的進度條
         hellIndicator.classList.add('hidden');
         hardModeProgress.classList.remove('hidden');
-        targetsNeeded.textContent = targetIndices.length;
+        hardModeBadge.classList.remove('hidden');
+        progressText.classList.add('hidden');
         updateHardModeProgress();
       } else {
         // 普通模式：隱藏所有特殊模式UI
-        difficultyIndicator.classList.add('hidden');
         hellIndicator.classList.add('hidden');
         hardModeProgress.classList.add('hidden');
+        hardModeBadge.classList.add('hidden');
+        progressText.classList.add('hidden');
       }
 
       const gameDiv = document.getElementById('game');
@@ -2516,12 +2512,14 @@
       summaryEl.classList.add("hidden");
       
       // 🔥 隱藏所有特殊模式UI
-      const difficultyIndicator = document.getElementById('difficulty-indicator');
       const hellIndicator = document.getElementById('hell-indicator');
       const hardModeProgress = document.getElementById('hard-mode-progress');
-      difficultyIndicator.classList.add('hidden');
+      const hardModeBadge = document.getElementById('hard-mode-badge');
+      const progressText = document.getElementById('progress-text');
       hellIndicator.classList.add('hidden');
       hardModeProgress.classList.add('hidden');
+      hardModeBadge.classList.add('hidden');
+      progressText.classList.add('hidden');
       
       showReady(() => {
         sound.start();
@@ -2712,11 +2710,15 @@
         showIntro();
       }
       
-      // Ensure hard mode UI is hidden on page load
-      const difficultyIndicator = document.getElementById('difficulty-indicator');
+      // Ensure special mode UI is hidden on page load
+      const hellIndicator = document.getElementById('hell-indicator');
       const hardModeProgress = document.getElementById('hard-mode-progress');
-      difficultyIndicator.classList.add('hidden');
+      const hardModeBadge = document.getElementById('hard-mode-badge');
+      const progressText = document.getElementById('progress-text');
+      hellIndicator.classList.add('hidden');
       hardModeProgress.classList.add('hidden');
+      hardModeBadge.classList.add('hidden');
+      progressText.classList.add('hidden');
       
       // Show cookie consent if needed
       setTimeout(showCookieConsent, 1000);

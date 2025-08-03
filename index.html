@@ -565,7 +565,7 @@
 
     /* 困難模式指示器 */
     #difficulty-indicator {
-      margin-bottom: var(--space-md);
+      margin: 0;
       animation: slideDown 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
@@ -1588,15 +1588,6 @@
         <span id="target-name">Loading...</span>
       </h1>
       
-      <!-- Hard Mode Indicator -->
-      <div id="difficulty-indicator" class="hidden">
-        <div class="difficulty-badge">
-          <span class="fire-icon">🔥</span>
-          <span>Hard Mode</span>
-          <span class="target-count">Find <span id="targets-needed">2</span>!</span>
-        </div>
-      </div>
-      
       <!-- 🔥 Hell Mode Indicator -->
       <div id="hell-indicator" class="hidden">
         <div class="hell-badge">
@@ -1605,12 +1596,21 @@
           <span class="hell-target-count">Find <span id="hell-targets-needed">3</span>!</span>
         </div>
       </div>
-      
+
       <div id="hud">
         <div id="time-display">
           <span style="font-size: 0.9rem; opacity: 0.8;">Time:</span>
           <span id="timer">30</span>s
           <span id="time-change"></span>
+        </div>
+
+        <!-- Hard Mode Indicator -->
+        <div id="difficulty-indicator" class="hidden">
+          <div class="difficulty-badge">
+            <span class="fire-icon">🔥</span>
+            <span>Hard Mode</span>
+            <span class="target-count">Find <span id="targets-needed">2</span>!</span>
+          </div>
         </div>
         
         <!-- Hard Mode Progress Indicator - In HUD -->

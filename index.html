@@ -31,11 +31,26 @@
   <meta name="apple-mobile-web-app-title" content="Muffind Game">
   <meta name="application-name" content="Muffind">
   
+  <!-- 🎯 Favicon and Icons -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="msapplication-TileImage" content="/android-chrome-192x192.png">
+  <meta name="msapplication-config" content="/browserconfig.xml">
+  
   <!-- 📱 Social Media & Open Graph -->
   <meta property="og:title" content="Muffin Chihuahua Game - Muffind | Viral Online Game">
   <meta property="og:description" content="Play Muffind, the Muffin Chihuahua game that challenges you to tell chihuahuas from muffins. Play free with friends and challenge your brain!">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://muffind.online/">
+  <meta property="og:image" content="https://muffind.online/android-chrome-512x512.png">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
+  <meta property="og:image:alt" content="Muffind game logo - Muffin vs Chihuahua recognition game">
   <meta property="og:image" content="https://muffind.online/muffin/muffin_0001.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -95,7 +110,6 @@
   <meta name="apple-touch-fullscreen" content="yes">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="referrer" content="origin-when-cross-origin">
-  <link rel="manifest" href="/manifest.json">
   <link rel="sitemap" type="application/xml" href="/sitemap.xml">
   <meta name="generator" content="Muffind Game Engine v2.0">
   
@@ -548,6 +562,40 @@
       padding: var(--space-md) 0;
       border-radius: var(--radius-md);
       transition: background 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-sm);
+    }
+
+    /* 🎮 遊戲圖標樣式 */
+    .game-icon {
+      border-radius: var(--radius-sm);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.2));
+    }
+
+    /* 根據主題調整圖標效果 */
+    body.theme-muffin .game-icon {
+      box-shadow: 0 2px 8px var(--muffin-glow);
+      filter: drop-shadow(0 2px 4px rgba(216, 67, 21, 0.3));
+    }
+
+    body.theme-chihuahua .game-icon {
+      box-shadow: 0 2px 8px var(--chihuahua-glow);
+      filter: drop-shadow(0 2px 4px rgba(255, 143, 0, 0.3));
+    }
+
+    body.hell-mode .game-icon {
+      box-shadow: 0 2px 12px var(--hell-mode-glow);
+      filter: drop-shadow(0 2px 6px rgba(183, 28, 28, 0.5));
+      animation: hell-icon-pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes hell-icon-pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
     }
 
     /* 🎨 主題專用標題效果 */
@@ -979,6 +1027,18 @@
       transform: translateX(-50%) translateY(-4px);
     }
 
+    /* 🎮 加載圖標動畫 */
+    .loading-icon {
+      animation: loading-spin 1s linear infinite;
+      margin-right: var(--space-xs);
+      vertical-align: middle;
+    }
+
+    @keyframes loading-spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
     #links {
       margin-top: var(--space-md);
       font-size: 0.8rem;
@@ -1120,6 +1180,25 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-sm);
+      flex-wrap: wrap;
+    }
+
+    /* 🎮 介紹頁面圖標樣式 */
+    .intro-icon {
+      border-radius: var(--radius-sm);
+      box-shadow: 0 4px 12px rgba(255, 143, 0, 0.3);
+      animation: intro-bounce 2s ease-in-out infinite;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    }
+
+    @keyframes intro-bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-8px); }
+      60% { transform: translateY(-4px); }
     }
 
     #summary p, #intro p, #about p, #contact p, #privacy p, #terms p, #help p {
@@ -1205,6 +1284,25 @@
         padding: var(--space-sm) 0;
         margin-bottom: var(--space-md);
         transition: background 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;
+        gap: var(--space-xs); /* 縮小圖標間距 */
+      }
+
+      /* 移動端圖標優化 */
+      .game-icon {
+        animation: none; /* 移除動畫以提升效能 */
+        width: 24px;
+        height: 24px;
+      }
+
+      .intro-icon {
+        animation: none; /* 移除彈跳動畫 */
+        width: 28px;
+        height: 28px;
+      }
+
+      .loading-icon {
+        width: 14px;
+        height: 14px;
       }
 
       /* 減少動畫複雜度以提升效能 */
@@ -1352,6 +1450,17 @@
       display: none !important;
     }
 
+    /* 🎮 頁腳圖標樣式 */
+    .footer-icon {
+      opacity: 0.7;
+      border-radius: 2px;
+      transition: opacity 0.3s ease;
+    }
+
+    .footer-icon:hover {
+      opacity: 1;
+    }
+
     /* 動畫關鍵幀 */
     @keyframes fadeIn {
       from { 
@@ -1437,7 +1546,17 @@
     "name": "Muffind - Muffin vs Chihuahua Recognition Game",
     "description": "A viral online image recognition game where players test their ability to distinguish between cute chihuahuas and delicious muffins. Features normal mode, hard mode (2 targets), and hell mode (3 targets) for progressive difficulty.",
     "url": "https://muffind.online/",
-    "image": "https://muffind.online/muffin/muffin_0001.jpg",
+    "image": [
+      "https://muffind.online/muffin/muffin_0001.jpg",
+      "https://muffind.online/android-chrome-512x512.png",
+      "https://muffind.online/favicon-32x32.png"
+    ],
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://muffind.online/android-chrome-512x512.png",
+      "width": 512,
+      "height": 512
+    },
     "genre": ["Puzzle", "Educational", "Brain Training", "Pattern Recognition"],
     "gamePlatform": "Web Browser",
     "numberOfPlayers": "1",
@@ -1578,6 +1697,7 @@
   <main class="container">
     <header>
       <h1 id="mode">
+        <img src="/favicon-32x32.png" alt="Muffind Game Icon" class="game-icon" width="32" height="32">
         <span class="prefix">Find the&nbsp;</span>
         <span id="target-name">Loading...</span>
       </h1>
@@ -1628,7 +1748,10 @@
     </article>
     
     <footer id="footer" role="contentinfo">
-      <div id="loading-indicator" aria-live="polite">🎨 Loading images...</div>
+      <div id="loading-indicator" aria-live="polite">
+        <img src="/favicon-16x16.png" alt="Loading" class="loading-icon" width="16" height="16">
+        Loading images...
+      </div>
       <p id="game-hint" role="tooltip">Click the right picture to keep playing</p>
       
       <!-- 📈 Additional SEO Context (Visible but Minimal) -->
@@ -1655,7 +1778,8 @@
           <a href="?help" style="color: var(--primary); text-decoration: none;">How to Play</a> • 
           <a href="?contact" style="color: var(--primary); text-decoration: none;">Contact</a>
         </p>
-        <p style="margin: 0; font-size: 0.7rem;">
+        <p style="margin: 0; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; gap: 6px;">
+          <img src="/favicon-16x16.png" alt="Muffind" class="footer-icon" width="16" height="16">
           © 2025 Muffind Team. Made with ❤️ in Taiwan. All rights reserved.
         </p>
       </div>
@@ -1736,7 +1860,10 @@
   
   <div id="intro" class="show no-click">
     <div class="modal-content">
-      <h2>Welcome to Muffind - Muffin Chihuahua Game 🎯</h2>
+      <h2>
+        <img src="/favicon-32x32.png" alt="Muffind Game Icon" class="intro-icon" width="32" height="32">
+        Welcome to Muffind - Muffin Chihuahua Game 🎯
+      </h2>
       <p>Test your skills in this muffin chihuahua game: Find 🧁 <strong>muffins</strong> or 🐶 <strong>chihuahuas</strong> as shown!</p>
       <p style="margin-top: var(--space-lg); font-size: 1rem; opacity: 0.8;">
         👆 Click anywhere to start playing

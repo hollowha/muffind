@@ -2123,6 +2123,7 @@
 
     let timeLeft = 30;
     let score = 0;
+    let percentageScore = 50; // 初始百分比分數，從50%開始
     let timerId;
     let gameActive = false;
     const summaryEl = document.getElementById("summary");
@@ -2263,9 +2264,8 @@
         timerEl.classList.add('critical');
       }
       
-      // 將分數轉換為百分比 (隨機化但基於分數)
-      const basePercentage = Math.min(97, Math.floor(score * 8.5 + Math.random() * 15));
-      const displayPercentage = Math.max(5, basePercentage); // 最少5%
+      // 使用 percentageScore 變量直接顯示，確保最少5%，最多99%
+      const displayPercentage = Math.max(5, Math.min(99, Math.floor(percentageScore)));
       document.getElementById('score').textContent = `${displayPercentage}%`;
     }
 
@@ -2636,6 +2636,7 @@
   function startGame() {
       timeLeft = 30;
       score = 0;
+      percentageScore = 50; // 重置百分比分數為50%
       foundTargets = 0; // 重置找到的目標數量
       isHardMode = false;
       isHellMode = false; // 🔥 重置地獄模式
@@ -2669,6 +2670,11 @@
         clearInterval(timerId);
         timerId = setInterval(() => {
           timeLeft--;
+          
+          // 每秒隨機遞減百分比 (0.3-0.8%之間)
+          const decreaseAmount = 0.3 + Math.random() * 0.5;
+          percentageScore = Math.max(5, percentageScore - decreaseAmount);
+          
           updateHUD();
           if (timeLeft <= 0) {
             endGame();
@@ -2683,9 +2689,8 @@
       gameActive = false;
       clearInterval(timerId);
       
-      // 計算最終百分比 (基於分數但加入隨機變化)
-      const basePercentage = Math.min(97, Math.floor(score * 8.5 + Math.random() * 15));
-      const finalPercentage = Math.max(5, basePercentage); // 最少5%
+      // 使用當前的 percentageScore，確保最少5%，最多99%
+      const finalPercentage = Math.max(5, Math.min(99, Math.floor(percentageScore)));
       document.getElementById('final-score').textContent = `${finalPercentage}%`;
       
       summaryClickable = false;
@@ -2710,6 +2715,12 @@
         }
         foundTargets++;
         
+        // 找到單個目標時的小幅獎勵 (僅在困難/地獄模式)
+        if (isHardMode || isHellMode) {
+          const smallBonus = 0.5 + Math.random() * 1; // 0.5-1.5%
+          percentageScore = Math.min(99, percentageScore + smallBonus);
+        }
+        
         // Update hard mode progress
         if (isHardMode) {
           updateHardModeProgress();
@@ -2717,6 +2728,16 @@
         
         if (foundTargets === targetIndices.length) {
           score++;
+          
+          // 答對完整一輪時增加百分比 (3-7%之間，基於模式調整)
+          let bonusAmount = 3 + Math.random() * 4; // 基礎3-7%
+          if (isHellMode) {
+            bonusAmount *= 1.5; // 地獄模式1.5倍獎勵
+          } else if (isHardMode) {
+            bonusAmount *= 1.2; // 困難模式1.2倍獎勵
+          }
+          percentageScore = Math.min(99, percentageScore + bonusAmount);
+          
           if (score === MEDIUM_MODE_THRESHOLD) {
             preloadQueue.length = 0;
             ensurePreload();
@@ -2768,6 +2789,11 @@
       } else {
         sound.wrong();
         timeLeft = Math.max(0, timeLeft - 2);
+        
+        // 答錯時額外的百分比懲罰 (1-2%之間)
+        const penaltyAmount = 1 + Math.random() * 1;
+        percentageScore = Math.max(5, percentageScore - penaltyAmount);
+        
         updateHUD();
         
         if (isHardMode) {

@@ -1732,8 +1732,9 @@
         </div>
         
         <div style="display: flex; align-items: center; gap: 8px;">
-          <span style="font-size: 0.9rem; opacity: 0.8;">Score:</span>
-          <span id="score" style="font-size: 1.4rem; font-weight: 700; color: var(--primary);">0</span>
+          <span style="font-size: 0.9rem; opacity: 0.8;">你勝過了:</span>
+          <span id="score" style="font-size: 1.4rem; font-weight: 700; color: var(--primary);">0%</span>
+          <span style="font-size: 0.9rem; opacity: 0.8;">的人</span>
         </div>
       </div>
     </header>
@@ -1851,7 +1852,7 @@
   <div id="summary" class="hidden">
     <div class="modal-content">
       <h2>🎉 Time is up!</h2>
-      <p>Your score: <strong id="final-score" style="color: var(--primary); font-size: 1.5em;"></strong></p>
+      <p>你勝過了: <strong id="final-score" style="color: var(--primary); font-size: 1.5em;"></strong> 的人！</p>
       <p style="margin-top: var(--space-md); opacity: 0.8;">Click anywhere to play again</p>
     </div>
   </div>
@@ -2262,7 +2263,10 @@
         timerEl.classList.add('critical');
       }
       
-      document.getElementById('score').textContent = score;
+      // 將分數轉換為百分比 (隨機化但基於分數)
+      const basePercentage = Math.min(97, Math.floor(score * 8.5 + Math.random() * 15));
+      const displayPercentage = Math.max(5, basePercentage); // 最少5%
+      document.getElementById('score').textContent = `${displayPercentage}%`;
     }
 
     function updateHardModeProgress() {
@@ -2280,7 +2284,11 @@
         hardModeCount.textContent = `${foundTargets}/${totalTargets}`;
       }
       if (progressText) {
-        progressText.textContent = `Found ${foundTargets} / ${totalTargets}`;
+        if (isHellMode) {
+          progressText.textContent = `Found ${foundTargets} / ${totalTargets} (Hell Mode)`;
+        } else {
+          progressText.textContent = `Found ${foundTargets} / ${totalTargets}`;
+        }
       }
     }
 
@@ -2378,7 +2386,9 @@
         hardModeProgress.classList.remove('hidden');
         hardModeBadge.classList.add('hidden');
         progressText.classList.remove('hidden');
-        hellTargetsNeeded.textContent = targetIndices.length;
+        if (hellTargetsNeeded) {
+          hellTargetsNeeded.textContent = targetIndices.length;
+        }
         updateHardModeProgress();
       } else if (isHardMode) {
         // 困難模式：顯示合併後的進度條
@@ -2561,6 +2571,7 @@
 
   function activateHardMode() {
     isHardMode = true;
+    foundTargets = 0; // 重置找到的目標數量
     document.body.classList.add('hard-mode');
     preloadQueue.length = 0;
     ensurePreload();
@@ -2579,6 +2590,7 @@
   function activateHellMode() {
     isHellMode = true;
     isHardMode = false; // 地獄模式覆蓋困難模式
+    foundTargets = 0; // 重置找到的目標數量
     document.body.classList.remove('hard-mode');
     document.body.classList.add('hell-mode');
     preloadQueue.length = 0;
@@ -2624,6 +2636,7 @@
   function startGame() {
       timeLeft = 30;
       score = 0;
+      foundTargets = 0; // 重置找到的目標數量
       isHardMode = false;
       isHellMode = false; // 🔥 重置地獄模式
       document.body.classList.remove('hard-mode', 'hell-mode');
@@ -2669,7 +2682,12 @@
       sound.end();
       gameActive = false;
       clearInterval(timerId);
-      document.getElementById('final-score').textContent = score;
+      
+      // 計算最終百分比 (基於分數但加入隨機變化)
+      const basePercentage = Math.min(97, Math.floor(score * 8.5 + Math.random() * 15));
+      const finalPercentage = Math.max(5, basePercentage); // 最少5%
+      document.getElementById('final-score').textContent = `${finalPercentage}%`;
+      
       summaryClickable = false;
       summaryEl.classList.remove("hidden");
       summaryEl.classList.add("no-click");
